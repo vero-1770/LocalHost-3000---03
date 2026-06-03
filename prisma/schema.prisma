@@ -1,13 +1,108 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+//Usuarios
+model User {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  username     String
+  email        String     @unique
+  passwordHash String?
+  avatarUrl    String?
+  favorites    Favorite[]
+  votes        Vote[]
+
+  @@map("users")
+}
+
+//Destinos
+model Destination {
+  id              Int              @id @default(autoincrement())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  name            String
+  description     String
+  country         String
+  location        String
+  budget          Float
+  rating          Float            @default(0.0)
+  totalScore      Int              @default(0)
+  votesCount      Int              @default(0)
+  images          Image[]
+  accommodations  Accommodation[]
+  favorites       Favorite[]
+  votes           Vote[]
+  transportations Transportation[]
+
+  @@map("destinations")
+}
+
+//IMAGENES 
+model Image {
+  id            Int         @id @default(autoincrement())
+  url           String
+  destinationId Int
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+
+  @@map("images")
+}
+
+//Alojamientos
+model Accommodation {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  name          String
+  type          String
+  description   String
+  pricePerNight Float
+  stars         Int?
+  location      String
+  destinationId Int
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+
+  @@map("accommodations")
+}
+
+//TRANSPORTE
+model Transportation {
+  id           Int           @id @default(autoincrement())
+  type         String
+  provider     String
+  destinations Destination[]
+
+  @@map("transportations")
+}
+
+//FAVORITOS
+model Favorite {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
+  userId        Int
+  destinationId Int
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, destinationId])
+  @@map("favorites")
+}
+
+//VOTOS
+model Vote {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
+  userId        Int
+  destinationId Int
+  score         Float
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, destinationId])
+  @@map("votes")
 }
