@@ -1,0 +1,1273 @@
+[
+  {
+    "nombre": "Bariloche",
+    "descripcion": "Ciudad patagónica famosa por sus lagos, montañas y el Cerro Catedral para esquí.",
+    "ubicacion": "Río Negro",
+    "pais": "Argentina",
+    "calificacion": 4.1,
+    "top": 1,
+    "accesibilidad": [
+      "avión",
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/bariloche/800/600",
+    "presupuesto": 80,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Llao Llao",
+        "ubicacion": "Circuito Chico",
+        "reseña": "Lujo con vistas al lago",
+        "presupuesto": 200,
+        "tipo": "Hotel"
+      },
+      {
+        "nombre": "Hostel Patanuk",
+        "ubicacion": "Centro",
+        "reseña": "Económico y céntrico",
+        "presupuesto": 40,
+        "tipo": "Hostel"
+      }
+    ],
+    "puntuacionTotal": 146,
+    "cantidadVotos": 36,
+    "id": "1"
+  },
+  {
+    "nombre": "Los Roques",
+    "descripcion": "Archipiélago venezolano con playas paradisíacas y aguas cristalinas.",
+    "ubicacion": "Caribe venezolano",
+    "pais": "Venezuela",
+    "calificacion": 4.1,
+    "top": 2,
+    "accesibilidad": [
+      "avión",
+      "barco"
+    ],
+    "imagen": "https://picsum.photos/seed/losroques/800/600",
+    "presupuesto": 90,
+    "alojamiento": [
+      {
+        "nombre": "Posada Acuarela",
+        "ubicacion": "Gran Roque",
+        "reseña": "Encanto isleño",
+        "presupuesto": 120,
+        "tipo": "Posada"
+      }
+    ],
+    "puntuacionTotal": 99,
+    "cantidadVotos": 24,
+    "id": "2"
+  },
+  {
+    "nombre": "San Juan",
+    "descripcion": "Capital de Puerto Rico, con casco histórico colonial y playas caribeñas.",
+    "ubicacion": "San Juan",
+    "pais": "Puerto Rico",
+    "calificacion": 3.8,
+    "top": 3,
+    "accesibilidad": [
+      "avión",
+      "crucero"
+    ],
+    "imagen": "https://picsum.photos/seed/sanjuan/800/600",
+    "presupuesto": 100,
+    "alojamiento": [
+      {
+        "nombre": "Hotel El Convento",
+        "ubicacion": "Viejo San Juan",
+        "reseña": "Histórico y elegante",
+        "presupuesto": 180,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 69,
+    "cantidadVotos": 18,
+    "id": "3"
+  },
+  {
+    "nombre": "Quito",
+    "descripcion": "Capital de Ecuador, famosa por su centro histórico y cercanía al volcán Cotopaxi.",
+    "ubicacion": "Quito",
+    "pais": "Ecuador",
+    "calificacion": 4.1,
+    "top": 4,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/quito/800/600",
+    "presupuesto": 70,
+    "alojamiento": [
+      {
+        "nombre": "Casa Gangotena",
+        "ubicacion": "Centro histórico",
+        "reseña": "Boutique de lujo",
+        "presupuesto": 150,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 53,
+    "cantidadVotos": 13,
+    "id": "4"
+  },
+  {
+    "nombre": "Cusco",
+    "descripcion": "Ciudad peruana, antigua capital del Imperio Inca y puerta de entrada a Machu Picchu.",
+    "ubicacion": "Cusco",
+    "pais": "Perú",
+    "calificacion": 4.3,
+    "top": 5,
+    "accesibilidad": [
+      "avión",
+      "tren",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/cusco/800/600",
+    "presupuesto": 85,
+    "alojamiento": [
+      {
+        "nombre": "Belmond Monasterio",
+        "ubicacion": "Centro histórico",
+        "reseña": "Hotel en antiguo monasterio",
+        "presupuesto": 200,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 116,
+    "cantidadVotos": 27,
+    "id": "5"
+  },
+  {
+    "nombre": "Valparaíso",
+    "descripcion": "Ciudad portuaria chilena con cerros coloridos y arte callejero.",
+    "ubicacion": "Valparaíso",
+    "pais": "Chile",
+    "calificacion": 4.2,
+    "top": 6,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/valparaiso/800/600",
+    "presupuesto": 60,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Fauna",
+        "ubicacion": "Cerro Alegre",
+        "reseña": "Moderno y artístico",
+        "presupuesto": 90,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 40,
+    "cantidadVotos": 10,
+    "id": "6"
+  },
+  {
+    "nombre": "Cartagena",
+    "descripcion": "Ciudad colombiana con murallas coloniales y playas caribeñas.",
+    "ubicacion": "Cartagena de Indias",
+    "pais": "Colombia",
+    "calificacion": 4.2,
+    "top": 7,
+    "accesibilidad": [
+      "avión",
+      "crucero"
+    ],
+    "imagen": "https://picsum.photos/seed/cartagena/800/600",
+    "presupuesto": 95,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Sofitel Santa Clara",
+        "ubicacion": "Centro histórico",
+        "reseña": "Lujo en convento restaurado",
+        "presupuesto": 220,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 80,
+    "cantidadVotos": 19,
+    "id": "7"
+  },
+  {
+    "nombre": "Iguazú",
+    "descripcion": "Las Cataratas del Iguazú, maravilla natural compartida entre Argentina y Brasil.",
+    "ubicacion": "Misiones",
+    "pais": "Argentina",
+    "calificacion": 4,
+    "top": 8,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/iguazu/800/600",
+    "presupuesto": 90,
+    "alojamiento": [
+      {
+        "nombre": "Gran Meliá Iguazú",
+        "ubicacion": "Parque Nacional",
+        "reseña": "Lujo con vista a las cataratas",
+        "presupuesto": 250,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 145,
+    "cantidadVotos": 36,
+    "id": "8"
+  },
+  {
+    "nombre": "Margarita",
+    "descripcion": "Isla venezolana con playas caribeñas y ambiente festivo.",
+    "ubicacion": "Nueva Esparta",
+    "pais": "Venezuela",
+    "calificacion": 4.3,
+    "top": 9,
+    "accesibilidad": [
+      "avión",
+      "ferry"
+    ],
+    "imagen": "https://picsum.photos/seed/margarita/800/600",
+    "presupuesto": 75,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Hilton Margarita",
+        "ubicacion": "Playa El Agua",
+        "reseña": "Resort frente al mar",
+        "presupuesto": 150,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 100,
+    "cantidadVotos": 23,
+    "id": "9"
+  },
+  {
+    "nombre": "El Yunque",
+    "descripcion": "Bosque tropical en Puerto Rico, ideal para senderismo y cascadas.",
+    "ubicacion": "Río Grande",
+    "pais": "Puerto Rico",
+    "calificacion": 4.3,
+    "top": 10,
+    "accesibilidad": [
+      "auto",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/yunque/800/600",
+    "presupuesto": 50,
+    "alojamiento": [],
+    "puntuacionTotal": 40,
+    "cantidadVotos": 9,
+    "id": "10"
+  },
+  {
+    "nombre": "Galápagos",
+    "descripcion": "Islas ecuatorianas con fauna única y paisajes volcánicos.",
+    "ubicacion": "Archipiélago Galápagos",
+    "pais": "Ecuador",
+    "calificacion": 4.6,
+    "top": 11,
+    "accesibilidad": [
+      "avión",
+      "barco"
+    ],
+    "imagen": "https://picsum.photos/seed/galapagos/800/600",
+    "presupuesto": 120,
+    "alojamiento": [
+      {
+        "nombre": "Finch Bay Hotel",
+        "ubicacion": "Puerto Ayora",
+        "reseña": "Ecohotel frente al mar",
+        "presupuesto": 200,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 105,
+    "cantidadVotos": 23,
+    "id": "11"
+  },
+  {
+    "nombre": "Machu Picchu",
+    "descripcion": "Ciudadela inca en Perú, Patrimonio de la Humanidad.",
+    "ubicacion": "Cusco",
+    "pais": "Perú",
+    "calificacion": 3.9,
+    "top": 12,
+    "accesibilidad": [
+      "tren",
+      "bus",
+      "sendero"
+    ],
+    "imagen": "https://picsum.photos/seed/machu/800/600",
+    "presupuesto": 110,
+    "alojamiento": [],
+    "puntuacionTotal": 201,
+    "cantidadVotos": 51,
+    "id": "12"
+  },
+  {
+    "nombre": "Torres del Paine",
+    "descripcion": "Parque nacional chileno con montañas, glaciares y lagos.",
+    "ubicacion": "Patagonia",
+    "pais": "Chile",
+    "calificacion": 4.5,
+    "top": 13,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/paine/800/600",
+    "presupuesto": 95,
+    "alojamiento": [
+      {
+        "nombre": "Explora Patagonia",
+        "ubicacion": "Parque Nacional",
+        "reseña": "Hotel de lujo en la naturaleza",
+        "presupuesto": 300,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 131,
+    "cantidadVotos": 29,
+    "id": "13"
+  },
+  {
+    "nombre": "Medellín",
+    "descripcion": "Ciudad colombiana moderna, rodeada de montañas y conocida por su innovación.",
+    "ubicacion": "Antioquia",
+    "pais": "Colombia",
+    "calificacion": 4.5,
+    "top": 14,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/medellin/800/600",
+    "presupuesto": 70,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Diez",
+        "ubicacion": "El Poblado",
+        "reseña": "Moderno y céntrico",
+        "presupuesto": 120,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 90,
+    "cantidadVotos": 20,
+    "id": "14"
+  },
+  {
+    "nombre": "Salta",
+    "descripcion": "Ciudad argentina con arquitectura colonial y paisajes montañosos.",
+    "ubicacion": "Salta",
+    "pais": "Argentina",
+    "calificacion": 4.4,
+    "top": 15,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/salta/800/600",
+    "presupuesto": 65,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Alejandro I",
+        "ubicacion": "Centro",
+        "reseña": "Elegante y céntrico",
+        "presupuesto": 140,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 96,
+    "cantidadVotos": 22,
+    "id": "15"
+  },
+  {
+    "nombre": "Mendoza",
+    "descripcion": "Región vitivinícola argentina, famosa por sus bodegas y la Cordillera de los Andes.",
+    "ubicacion": "Mendoza",
+    "pais": "Argentina",
+    "calificacion": 4.3,
+    "top": 16,
+    "accesibilidad": [
+      "avión",
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/mendoza/800/600",
+    "presupuesto": 85,
+    "alojamiento": [
+      {
+        "nombre": "Cavas Wine Lodge",
+        "ubicacion": "Luján de Cuyo",
+        "reseña": "Lujo entre viñedos",
+        "presupuesto": 250,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 100,
+    "cantidadVotos": 23,
+    "id": "16"
+  },
+  {
+    "nombre": "Morrocoy",
+    "descripcion": "Parque nacional venezolano con cayos y playas de aguas turquesa.",
+    "ubicacion": "Falcón",
+    "pais": "Venezuela",
+    "calificacion": 4.4,
+    "top": 17,
+    "accesibilidad": [
+      "auto",
+      "lancha"
+    ],
+    "imagen": "https://picsum.photos/seed/morrocoy/800/600",
+    "presupuesto": 70,
+    "alojamiento": [],
+    "puntuacionTotal": 88,
+    "cantidadVotos": 20,
+    "id": "17"
+  },
+  {
+    "nombre": "Vieques",
+    "descripcion": "Isla de Puerto Rico famosa por su bahía bioluminiscente.",
+    "ubicacion": "Vieques",
+    "pais": "Puerto Rico",
+    "calificacion": 4.8,
+    "top": 18,
+    "accesibilidad": [
+      "ferry",
+      "avión"
+    ],
+    "imagen": "https://picsum.photos/seed/vieques/800/600",
+    "presupuesto": 95,
+    "alojamiento": [
+      {
+        "nombre": "El Blok",
+        "ubicacion": "Esperanza",
+        "reseña": "Hotel boutique moderno",
+        "presupuesto": 160,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 90,
+    "cantidadVotos": 20,
+    "id": "18"
+  },
+  {
+    "nombre": "Baños de Agua Santa",
+    "descripcion": "Ciudad ecuatoriana con cascadas, aguas termales y deportes de aventura.",
+    "ubicacion": "Tungurahua",
+    "pais": "Ecuador",
+    "calificacion": 4.5,
+    "top": 19,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/banos/800/600",
+    "presupuesto": 60,
+    "alojamiento": [],
+    "puntuacionTotal": 76,
+    "cantidadVotos": 17,
+    "id": "19"
+  },
+  {
+    "nombre": "Arequipa",
+    "descripcion": "Ciudad peruana conocida como la 'Ciudad Blanca', cercana al Cañón del Colca.",
+    "ubicacion": "Arequipa",
+    "pais": "Perú",
+    "calificacion": 4.4,
+    "top": 20,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/arequipa/800/600",
+    "presupuesto": 65,
+    "alojamiento": [
+      {
+        "nombre": "Casa Andina Premium",
+        "ubicacion": "Centro",
+        "reseña": "Hotel colonial elegante",
+        "presupuesto": 120,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 60,
+    "cantidadVotos": 14,
+    "id": "20"
+  },
+  {
+    "nombre": "Atacama",
+    "descripcion": "Desierto chileno con paisajes únicos, salares y observatorios astronómicos.",
+    "ubicacion": "San Pedro de Atacama",
+    "pais": "Chile",
+    "calificacion": 4.3,
+    "top": 21,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/atacama/800/600",
+    "presupuesto": 100,
+    "alojamiento": [
+      {
+        "nombre": "Tierra Atacama",
+        "ubicacion": "San Pedro",
+        "reseña": "Hotel boutique con spa",
+        "presupuesto": 220,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 111,
+    "cantidadVotos": 26,
+    "id": "21"
+  },
+  {
+    "nombre": "Bogotá",
+    "descripcion": "Capital de Colombia, con museos, gastronomía y el Cerro Monserrate.",
+    "ubicacion": "Bogotá",
+    "pais": "Colombia",
+    "calificacion": 4.3,
+    "top": 22,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/bogota/800/600",
+    "presupuesto": 75,
+    "alojamiento": [
+      {
+        "nombre": "Hotel de la Opera",
+        "ubicacion": "La Candelaria",
+        "reseña": "Colonial y céntrico",
+        "presupuesto": 130,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 65,
+    "cantidadVotos": 16,
+    "id": "22"
+  },
+  {
+    "nombre": "El Calafate",
+    "descripcion": "Ciudad argentina puerta de entrada al glaciar Perito Moreno.",
+    "ubicacion": "Santa Cruz",
+    "pais": "Argentina",
+    "calificacion": 4.3,
+    "top": 23,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/calafate/800/600",
+    "presupuesto": 90,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Posada Los Álamos",
+        "ubicacion": "Centro",
+        "reseña": "Cómodo y elegante",
+        "presupuesto": 180,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 104,
+    "cantidadVotos": 24,
+    "id": "23"
+  },
+  {
+    "nombre": "Mérida",
+    "descripcion": "Ciudad venezolana en los Andes, famosa por su teleférico y paisajes montañosos.",
+    "ubicacion": "Mérida",
+    "pais": "Venezuela",
+    "calificacion": 4.7,
+    "top": 24,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/merida/800/600",
+    "presupuesto": 70,
+    "alojamiento": [],
+    "puntuacionTotal": 85,
+    "cantidadVotos": 19,
+    "id": "24"
+  },
+  {
+    "nombre": "San Andrés",
+    "descripcion": "Isla colombiana con playas caribeñas y mar de siete colores.",
+    "ubicacion": "San Andrés",
+    "pais": "Colombia",
+    "calificacion": 4.4,
+    "top": 25,
+    "accesibilidad": [
+      "avión",
+      "barco"
+    ],
+    "imagen": "https://picsum.photos/seed/sanandres/800/600",
+    "presupuesto": 95,
+    "alojamiento": [
+      {
+        "nombre": "Decameron Aquarium",
+        "ubicacion": "Centro",
+        "reseña": "Resort frente al mar",
+        "presupuesto": 200,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 124,
+    "cantidadVotos": 28,
+    "id": "25"
+  },
+  {
+    "nombre": "Tilcara",
+    "descripcion": "Pueblo jujeño con ruinas preincaicas y paisajes de la Quebrada de Humahuaca.",
+    "ubicacion": "Jujuy",
+    "pais": "Argentina",
+    "calificacion": 4.3,
+    "top": 26,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/tilcara/800/600",
+    "presupuesto": 55,
+    "alojamiento": [
+      {
+        "nombre": "Hostal Malka",
+        "ubicacion": "Centro",
+        "reseña": "Rústico y acogedor",
+        "presupuesto": 40,
+        "tipo": "Hostel"
+      }
+    ],
+    "puntuacionTotal": 65,
+    "cantidadVotos": 15,
+    "id": "26"
+  },
+  {
+    "nombre": "Canaima",
+    "descripcion": "Parque nacional venezolano con tepuyes y el Salto Ángel, la cascada más alta del mundo.",
+    "ubicacion": "Bolívar",
+    "pais": "Venezuela",
+    "calificacion": 4.2,
+    "top": 27,
+    "accesibilidad": [
+      "avión"
+    ],
+    "imagen": "https://picsum.photos/seed/canaima/800/600",
+    "presupuesto": 100,
+    "alojamiento": [
+      {
+        "nombre": "Campamento Canaima",
+        "ubicacion": "Orilla Laguna Canaima",
+        "reseña": "Cabañas básicas con vista a los tepuyes",
+        "presupuesto": 70,
+        "tipo": "Cabaña"
+      }
+    ],
+    "puntuacionTotal": 151,
+    "cantidadVotos": 36,
+    "id": "27"
+  },
+  {
+    "nombre": "Ponce",
+    "descripcion": "Ciudad puertorriqueña con arquitectura colonial y museos destacados.",
+    "ubicacion": "Ponce",
+    "pais": "Puerto Rico",
+    "calificacion": 4.2,
+    "top": 28,
+    "accesibilidad": [
+      "auto",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/ponce/800/600",
+    "presupuesto": 60,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Melia Ponce",
+        "ubicacion": "Centro histórico",
+        "reseña": "Elegante y céntrico",
+        "presupuesto": 150,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 45,
+    "cantidadVotos": 11,
+    "id": "28"
+  },
+  {
+    "nombre": "Otavalo",
+    "descripcion": "Ciudad ecuatoriana famosa por su mercado indígena y artesanías.",
+    "ubicacion": "Imbabura",
+    "pais": "Ecuador",
+    "calificacion": 4.3,
+    "top": 29,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/otavalo/800/600",
+    "presupuesto": 50,
+    "alojamiento": [
+      {
+        "nombre": "Hostal El Indio",
+        "ubicacion": "Mercado de Otavalo",
+        "reseña": "Cerca del mercado artesanal",
+        "presupuesto": 45,
+        "tipo": "Hostel"
+      }
+    ],
+    "puntuacionTotal": 55,
+    "cantidadVotos": 13,
+    "id": "29"
+  },
+  {
+    "nombre": "Trujillo",
+    "descripcion": "Ciudad peruana con ruinas de Chan Chan y playas cercanas.",
+    "ubicacion": "La Libertad",
+    "pais": "Perú",
+    "calificacion": 4.4,
+    "top": 30,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/trujillo/800/600",
+    "presupuesto": 65,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Libertador",
+        "ubicacion": "Centro de Trujillo",
+        "reseña": "Colonial y elegante",
+        "presupuesto": 120,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 70,
+    "cantidadVotos": 15,
+    "id": "30"
+  },
+  {
+    "nombre": "Chiloé",
+    "descripcion": "Isla chilena con iglesias patrimoniales y paisajes rurales.",
+    "ubicacion": "Los Lagos",
+    "pais": "Chile",
+    "calificacion": 4.5,
+    "top": 31,
+    "accesibilidad": [
+      "ferry",
+      "avión"
+    ],
+    "imagen": "https://picsum.photos/seed/chiloe/800/600",
+    "presupuesto": 75,
+    "alojamiento": [
+      {
+        "nombre": "Palafito Hostel",
+        "ubicacion": "Castro",
+        "reseña": "Alojamiento típico sobre el agua",
+        "presupuesto": 60,
+        "tipo": "Hostel"
+      }
+    ],
+    "puntuacionTotal": 95,
+    "cantidadVotos": 21,
+    "id": "31"
+  },
+  {
+    "nombre": "Santa Marta",
+    "descripcion": "Ciudad colombiana con acceso al Parque Tayrona y playas caribeñas.",
+    "ubicacion": "Magdalena",
+    "pais": "Colombia",
+    "calificacion": 4.7,
+    "top": 32,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/santamarta/800/600",
+    "presupuesto": 85,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Tayrona Ecohabs",
+        "ubicacion": "Parque Tayrona",
+        "reseña": "Cabañas ecológicas frente al mar",
+        "presupuesto": 180,
+        "tipo": "Ecohotel"
+      }
+    ],
+    "puntuacionTotal": 95,
+    "cantidadVotos": 21,
+    "id": "32"
+  },
+  {
+    "nombre": "Villa La Angostura",
+    "descripcion": "Destino patagónico argentino con lagos y bosques.",
+    "ubicacion": "Neuquén",
+    "pais": "Argentina",
+    "calificacion": 4.2,
+    "top": 33,
+    "accesibilidad": [
+      "auto",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/angostura/800/600",
+    "presupuesto": 80,
+    "alojamiento": [
+      {
+        "nombre": "Hostería Las Balsas",
+        "ubicacion": "Bahía Manzano",
+        "reseña": "Boutique frente al lago",
+        "presupuesto": 200,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 101,
+    "cantidadVotos": 24,
+    "id": "33"
+  },
+  {
+    "nombre": "Coro",
+    "descripcion": "Ciudad venezolana con arquitectura colonial y dunas de arena.",
+    "ubicacion": "Falcón",
+    "pais": "Venezuela",
+    "calificacion": 4.1,
+    "top": 34,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/coro/800/600",
+    "presupuesto": 55,
+    "alojamiento": [
+      {
+        "nombre": "Posada Colonial Coro",
+        "ubicacion": "Centro histórico",
+        "reseña": "Estilo colonial tradicional",
+        "presupuesto": 70,
+        "tipo": "Posada"
+      }
+    ],
+    "puntuacionTotal": 40,
+    "cantidadVotos": 10,
+    "id": "34"
+  },
+  {
+    "nombre": "Popayán",
+    "descripcion": "Ciudad colombiana conocida como la 'Ciudad Blanca' por su arquitectura colonial.",
+    "ubicacion": "Cauca",
+    "pais": "Colombia",
+    "calificacion": 4.3,
+    "top": 35,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/popayan/800/600",
+    "presupuesto": 60,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Dann Monasterio",
+        "ubicacion": "Centro de Popayán",
+        "reseña": "Hotel en antiguo monasterio",
+        "presupuesto": 140,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 50,
+    "cantidadVotos": 12,
+    "id": "35"
+  },
+  {
+    "nombre": "Puerto Madryn",
+    "descripcion": "Ciudad argentina famosa por el avistamiento de ballenas y la Península Valdés.",
+    "ubicacion": "Chubut",
+    "pais": "Argentina",
+    "calificacion": 4.3,
+    "top": 36,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/madryn/800/600",
+    "presupuesto": 85,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Territorio",
+        "ubicacion": "Costanera",
+        "reseña": "Vista al mar y estilo moderno",
+        "presupuesto": 160,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 98,
+    "cantidadVotos": 23,
+    "id": "36"
+  },
+  {
+    "nombre": "Chichiriviche",
+    "descripcion": "Destino venezolano con playas y cayos dentro del Parque Nacional Morrocoy.",
+    "ubicacion": "Falcón",
+    "pais": "Venezuela",
+    "calificacion": 4.4,
+    "top": 37,
+    "accesibilidad": [
+      "auto",
+      "lancha"
+    ],
+    "imagen": "https://picsum.photos/seed/chichiriviche/800/600",
+    "presupuesto": 70,
+    "alojamiento": [
+      {
+        "nombre": "Posada La Gaviota",
+        "ubicacion": "Playa Norte",
+        "reseña": "Cálida atención y cercanía al mar",
+        "presupuesto": 90,
+        "tipo": "Posada"
+      }
+    ],
+    "puntuacionTotal": 75,
+    "cantidadVotos": 17,
+    "id": "37"
+  },
+  {
+    "nombre": "Rincón",
+    "descripcion": "Ciudad costera de Puerto Rico, famosa por el surf y las puestas de sol.",
+    "ubicacion": "Rincón",
+    "pais": "Puerto Rico",
+    "calificacion": 4.5,
+    "top": 38,
+    "accesibilidad": [
+      "auto",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/rincon/800/600",
+    "presupuesto": 80,
+    "alojamiento": [
+      {
+        "nombre": "Casa Verde Hotel",
+        "ubicacion": "Playa Sandy",
+        "reseña": "Ambiente relajado y surfero",
+        "presupuesto": 120,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 95,
+    "cantidadVotos": 21,
+    "id": "38"
+  },
+  {
+    "nombre": "Montañita",
+    "descripcion": "Pueblo ecuatoriano famoso por el surf, la vida nocturna y su ambiente bohemio.",
+    "ubicacion": "Santa Elena",
+    "pais": "Ecuador",
+    "calificacion": 4.3,
+    "top": 39,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/montanita/800/600",
+    "presupuesto": 65,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Dharma Beach",
+        "ubicacion": "Playa Montañita",
+        "reseña": "Frente al mar con estilo moderno",
+        "presupuesto": 110,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 70,
+    "cantidadVotos": 15,
+    "id": "39"
+  },
+  {
+    "nombre": "Huanchaco",
+    "descripcion": "Balneario peruano famoso por los caballitos de totora y la cultura mochica.",
+    "ubicacion": "La Libertad",
+    "pais": "Perú",
+    "calificacion": 4.2,
+    "top": 40,
+    "accesibilidad": [
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/huanchaco/800/600",
+    "presupuesto": 60,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Bracamonte",
+        "ubicacion": "Playa Huanchaco",
+        "reseña": "Tradicional y frente al mar",
+        "presupuesto": 95,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 55,
+    "cantidadVotos": 13,
+    "id": "40"
+  },
+  {
+    "nombre": "Carúpano",
+    "descripcion": "Ciudad costera venezolana en el estado Sucre, famosa por sus playas caribeñas y su carnaval tradicional.",
+    "ubicacion": "Sucre",
+    "pais": "Venezuela",
+    "calificacion": 4.5,
+    "top": 41,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/carupano/800/600",
+    "presupuesto": 65,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Carúpano Plaza",
+        "ubicacion": "Centro",
+        "reseña": "Cómodo y céntrico, ideal para turistas",
+        "presupuesto": 110,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 75,
+    "cantidadVotos": 17,
+    "id": "41"
+  },
+  {
+    "nombre": "Cumaná",
+    "descripcion": "Ciudad costera venezolana, considerada la más antigua de Sudamérica.",
+    "ubicacion": "Sucre",
+    "pais": "Venezuela",
+    "calificacion": 4.3,
+    "top": 42,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/cumana/800/600",
+    "presupuesto": 65,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Cumanagoto",
+        "ubicacion": "Playa San Luis",
+        "reseña": "Resort frente al mar",
+        "presupuesto": 140,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 60,
+    "cantidadVotos": 14,
+    "id": "42"
+  },
+  {
+    "nombre": "Ciudad Bolívar",
+    "descripcion": "Ciudad histórica venezolana a orillas del río Orinoco.",
+    "ubicacion": "Bolívar",
+    "pais": "Venezuela",
+    "calificacion": 4.2,
+    "top": 43,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/bolivar/800/600",
+    "presupuesto": 60,
+    "alojamiento": [
+      {
+        "nombre": "Posada Angostura",
+        "ubicacion": "Casco histórico",
+        "reseña": "Colonial y acogedora",
+        "presupuesto": 80,
+        "tipo": "Posada"
+      }
+    ],
+    "puntuacionTotal": 55,
+    "cantidadVotos": 12,
+    "id": "43"
+  },
+  {
+    "nombre": "Maracaibo",
+    "descripcion": "Ciudad venezolana junto al Lago de Maracaibo, con gran vida cultural.",
+    "ubicacion": "Zulia",
+    "pais": "Venezuela",
+    "calificacion": 4.4,
+    "top": 44,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/maracaibo/800/600",
+    "presupuesto": 75,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Maruma",
+        "ubicacion": "Centro",
+        "reseña": "Moderno y cómodo",
+        "presupuesto": 130,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 70,
+    "cantidadVotos": 15,
+    "id": "44"
+  },
+  {
+    "nombre": "Puerto Ayacucho",
+    "descripcion": "Ciudad venezolana en la Amazonía, puerta de entrada a la selva.",
+    "ubicacion": "Amazonas",
+    "pais": "Venezuela",
+    "calificacion": 4.1,
+    "top": 45,
+    "accesibilidad": [
+      "avión",
+      "barco"
+    ],
+    "imagen": "https://picsum.photos/seed/ayacucho/800/600",
+    "presupuesto": 55,
+    "alojamiento": [
+      {
+        "nombre": "Posada Amazonas",
+        "ubicacion": "Ribera del Orinoco",
+        "reseña": "Rústico y natural",
+        "presupuesto": 70,
+        "tipo": "Posada"
+      }
+    ],
+    "puntuacionTotal": 45,
+    "cantidadVotos": 10,
+    "id": "45"
+  },
+  {
+    "nombre": "Rosario",
+    "descripcion": "Ciudad argentina a orillas del río Paraná, con gran vida cultural.",
+    "ubicacion": "Santa Fe",
+    "pais": "Argentina",
+    "calificacion": 4.5,
+    "top": 46,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/rosario/800/600",
+    "presupuesto": 70,
+    "alojamiento": [
+      {
+        "nombre": "Ros Tower Hotel",
+        "ubicacion": "Centro",
+        "reseña": "Moderno y elegante",
+        "presupuesto": 150,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 80,
+    "cantidadVotos": 18,
+    "id": "46"
+  },
+  {
+    "nombre": "San Martín de los Andes",
+    "descripcion": "Destino patagónico argentino con lagos y montañas.",
+    "ubicacion": "Neuquén",
+    "pais": "Argentina",
+    "calificacion": 4.3,
+    "top": 47,
+    "accesibilidad": [
+      "avión",
+      "bus",
+      "auto"
+    ],
+    "imagen": "https://picsum.photos/seed/sma/800/600",
+    "presupuesto": 90,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Loi Suites Chapelco",
+        "ubicacion": "Ruta 40",
+        "reseña": "Lujo con vista a la cordillera",
+        "presupuesto": 200,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 103,
+    "cantidadVotos": 24,
+    "id": "47"
+  },
+  {
+    "nombre": "Corrientes",
+    "descripcion": "Ciudad argentina a orillas del Paraná, famosa por su carnaval.",
+    "ubicacion": "Corrientes",
+    "pais": "Argentina",
+    "calificacion": 4.3,
+    "top": 48,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/corrientes/800/600",
+    "presupuesto": 65,
+    "alojamiento": [
+      {
+        "nombre": "Gran Hotel Guaraní",
+        "ubicacion": "Centro",
+        "reseña": "Histórico y elegante",
+        "presupuesto": 120,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 60,
+    "cantidadVotos": 14,
+    "id": "48"
+  },
+  {
+    "nombre": "San Juan",
+    "descripcion": "Ciudad argentina con bodegas y paisajes cordilleranos.",
+    "ubicacion": "San Juan",
+    "pais": "Argentina",
+    "calificacion": 4.4,
+    "top": 49,
+    "accesibilidad": [
+      "avión",
+      "bus"
+    ],
+    "imagen": "https://picsum.photos/seed/sanjuanarg/800/600",
+    "presupuesto": 70,
+    "alojamiento": [
+      {
+        "nombre": "Hotel Del Bono Park",
+        "ubicacion": "Centro",
+        "reseña": "Moderno y cómodo",
+        "presupuesto": 140,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 65,
+    "cantidadVotos": 15,
+    "id": "49"
+  },
+  {
+    "nombre": "Ushuaia",
+    "descripcion": "La ciudad más austral del mundo, puerta de entrada a la Antártida.",
+    "ubicacion": "Tierra del Fuego",
+    "pais": "Argentina",
+    "calificacion": 4.3,
+    "top": 50,
+    "accesibilidad": [
+      "avión",
+      "barco"
+    ],
+    "imagen": "https://picsum.photos/seed/ushuaia/800/600",
+    "presupuesto": 100,
+    "alojamiento": [
+      {
+        "nombre": "Arakur Ushuaia Resort & Spa",
+        "ubicacion": "Reserva Natural Cerro Alarkén",
+        "reseña": "Lujo con vistas panorámicas",
+        "presupuesto": 250,
+        "tipo": "Hotel"
+      }
+    ],
+    "puntuacionTotal": 128,
+    "cantidadVotos": 30,
+    "id": "50"
+  }
+]
