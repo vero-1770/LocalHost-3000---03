@@ -1,6 +1,12 @@
 import express from "express";
 import cors from "cors";
 import destinoRoutes from "./routes/destino.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import accommodationRoutes from "./routes/accommodation.routes.js";
+import transportationRoutes from "./routes/transportation.routes.js";
+import favoriteRoutes from "./routes/favorite.routes.js";
+import voteRoutes from "./routes/vote.routes.js";
+import imageRoutes from "./routes/image.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -17,6 +23,12 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/destinos", destinoRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/accommodations", accommodationRoutes);
+app.use("/api/transportations", transportationRoutes);
+app.use("/api/favorites", favoriteRoutes);
+app.use("/api/votes", voteRoutes);
+app.use("/api/images", imageRoutes);
 
 //Debe ir SIEMPRE al final, despues de todas las rutas
 app.use(errorHandler);

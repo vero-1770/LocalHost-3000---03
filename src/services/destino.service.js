@@ -14,7 +14,7 @@ export const createDestino = async (data) => {
     return await prisma.destination.create({
         data: {
             name: data.nombre,
-            description: data.description,
+            description: data.descripcion,
             country: data.pais,
             location: data.ciudad,
             budget: Number(data.precio),
@@ -27,7 +27,7 @@ export const updateDestino = async (id, data) => {
         where: { id },
         data: {
             name: data.nombre,
-            description: data.description,
+            description: data.descripcion,
             country: data.pais,
             location: data.ciudad,
             budget: Number(data.precio),
