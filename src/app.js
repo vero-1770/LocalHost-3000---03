@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import destinoRoutes from "./routes/destino.routes.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -13,5 +15,10 @@ app.get("/api/health", (req, res) => {
     message: "API funcionando correctamente",
   });
 });
+
+app.use("/api/destinos", destinoRoutes);
+
+//Debe ir SIEMPRE al final, despues de todas las rutas
+app.use(errorHandler);
 
 export default app;

@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/vero-1770/LocalHost-3000---03#readme",
   "dependencies": {
-    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/adapter-neon": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
