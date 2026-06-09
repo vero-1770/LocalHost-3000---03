@@ -8,7 +8,11 @@ import { validateDestino } from "../validations/destino.validation.js";
 
 export const getDestinos = async (req, res, next) => {
     try {
-        const destinos = await getAllDestinos();
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 9;
+        const search = req.query.search || '';
+
+        const destinos = await getAllDestinos(page, limit, search);
         res.status(200).json(destinos);
     } catch (error) {
         next(error);
@@ -104,6 +108,3 @@ export const deleteDestinoController = async (req, res, next) => {
         next(error);
     }
 };
-
-
-

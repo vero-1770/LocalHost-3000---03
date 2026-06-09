@@ -1,7 +1,13 @@
 import { prisma } from "../prisma/prismaClient.js";
 
-export const getAllDestinos = async () => {
-    return await prisma.destination.findMany();
+export const getAllDestinos = async (page = 1, limit = 9) => {
+    // Calculamos cuántos registros saltear según la página
+    const skip = (page - 1) * limit;
+
+    return await prisma.destination.findMany({
+        skip: skip,
+        take: limit,
+    });
 };
 
 export const getDestinoById = async (id) => {
