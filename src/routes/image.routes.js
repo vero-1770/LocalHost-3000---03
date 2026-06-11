@@ -4,11 +4,12 @@ import {
   postImage,
   deleteImage,
 } from "../controllers/image.controller.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
 router.get("/destinations/:destinationId", getImages);
-router.post("/", postImage);
-router.delete("/:id", deleteImage);
+router.post("/",verifyToken, postImage);
+router.delete("/:id",verifyToken, deleteImage);
 
 export default router;

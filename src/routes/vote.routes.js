@@ -4,11 +4,12 @@ import {
   postVote,
   deleteVote,
 } from "../controllers/vote.controller.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.get("/users/:userId", getVotes);
-router.post("/", postVote);
-router.delete("/", deleteVote);
+router.get("/users/:userId",verifyToken, getVotes);
+router.post("/",verifyToken, postVote);
+router.delete("/",verifyToken, deleteVote);
 
 export default router;
