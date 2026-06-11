@@ -1,17 +1,19 @@
 import { Router } from "express";
-import { getDestinos, 
-         getDestino,
-         postDestino,
-         putDestino,
-         deleteDestinoController,
-        } from "../controllers/destino.controller.js";
+import {
+ getDestinos, 
+ getDestino,
+ postDestino,
+ putDestino,
+ deleteDestinoController,
+} from "../controllers/destino.controller.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
 router.get("/", getDestinos);
 router.get("/:id", getDestino);
-router.post("/", postDestino);
-router.put("/:id", putDestino);
-router.delete("/:id", deleteDestinoController);
+router.post("/",verifyToken, postDestino);
+router.put("/:id",verifyToken, putDestino);
+router.delete("/:id",verifyToken, deleteDestinoController);
 
 export default router;
