@@ -8,8 +8,8 @@ import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.get("/users/:userId",verifyToken, getFavorites);
+router.get("/",verifyToken, getFavorites);
 router.post("/",verifyToken, postFavorite);
-router.delete("/",verifyToken, deleteFavorite);
+router.delete("/:id",verifyToken, deleteFavorite);
 
 export default router;
