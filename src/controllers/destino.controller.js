@@ -27,16 +27,19 @@ export const getDestino = async (req, res, next) => {
         const id = parseInt(req.params.id);
 
         if (isNaN(id)) {
-            return res.status(400).json({ error: "El ID debe ser un numero valido"});
+            return res.status(400).json({ error: "El ID debe ser un numero valido" });
         }
+
+        const lang = req.query.lang || "es";
 
         const destino = await getDestinoById(id);
 
         if (!destino) {
-            return res.status(404).json({ error: "Destino no encontrado"});
+            return res.status(404).json({ error: "Destino no encontrado" });
         }
 
-        res.status(200).json(destino);
+        // Aplanamos el destino con su traducción en el idioma pedido
+        res.status(200).json(formatDestino(destino, lang));
     } catch (error) {
         next(error);
     }

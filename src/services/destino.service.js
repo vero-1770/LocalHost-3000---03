@@ -14,7 +14,10 @@ export const getAllDestinos = async (page = 1, limit = 9) => {
 
 export const getDestinoById = async (id) => {
     return await prisma.destination.findUnique({
-        where: {id},
+        where: { id },
+        include: {
+            translations: true,
+        },
     });
 };
 
