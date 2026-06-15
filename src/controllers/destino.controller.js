@@ -5,15 +5,18 @@ import { getAllDestinos,
          deleteDestino,
         } from "../services/destino.service.js";
 import { validateDestino } from "../validations/destino.validation.js";
+import { formatDestino } from "../utils/destinoFormatter.js";
 
 export const getDestinos = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 9;
-        const search = req.query.search || '';
+        const lang = req.query.lang || "es";
 
-        const destinos = await getAllDestinos(page, limit, search);
-        res.status(200).json(destinos);
+        const destinos = await getAllDestinos(page, limit);
+        const destinosFormateados = destinos.map((d) => formatDestino(d, lang));
+
+        res.status(200).json(destinosFormateados);
     } catch (error) {
         next(error);
     }
