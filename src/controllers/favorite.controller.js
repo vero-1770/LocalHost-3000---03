@@ -7,7 +7,7 @@ import { prisma } from "../prisma/prismaClient.js";
 
 export const getFavorites = async (req, res, next) => {
   try {
-    const userId = parseInt(req.params.userId);
+    const userId = req.user.id;
     if (isNaN(userId)) {
       return res.status(400).json({ error: "El ID de usuario debe ser un número válido" });
     }
@@ -21,7 +21,8 @@ export const getFavorites = async (req, res, next) => {
 
 export const postFavorite = async (req, res, next) => {
   try {
-    const { userId, destinationId } = req.body;
+    const userId = req.user.id;
+    const { destinationId } = req.body;
 
     if (!userId || isNaN(Number(userId))) {
       return res.status(400).json({ error: "El ID de usuario es obligatorio y debe ser un número válido" });
@@ -62,7 +63,8 @@ export const postFavorite = async (req, res, next) => {
 
 export const deleteFavorite = async (req, res, next) => {
   try {
-    const { userId, destinationId } = req.body;
+    const userId = req.user.id;
+    const { id: destinationId } = req.params;
 
     if (!userId || isNaN(Number(userId))) {
       return res.status(400).json({ error: "El ID de usuario es obligatorio y debe ser un número válido" });

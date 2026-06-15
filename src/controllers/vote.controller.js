@@ -21,7 +21,8 @@ export const getVotes = async (req, res, next) => {
 
 export const postVote = async (req, res, next) => {
   try {
-    const { userId, destinationId, score } = req.body;
+    const userId = req.user.id;
+    const { destinationId, score } = req.body;
 
     //Validar userId
     if (!userId || isNaN(Number(userId))) {
@@ -62,6 +63,9 @@ export const postVote = async (req, res, next) => {
       Number(destinationId),
       Number(score)
     );
+
+    const updatedDestination = await prisma.destination.findUnique({ where: { id: Number(destinationId) }});
+
     res.status(201).json(vote);
   } catch (error) {
     // Voto duplicado
