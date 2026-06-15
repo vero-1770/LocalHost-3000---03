@@ -48,8 +48,8 @@ model DestinationTranslation {
   language      String
   name          String
   description   String
-  country         String
-  location        String
+  country       String
+  location      String
   destinationId Int
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
