@@ -78,25 +78,35 @@ export const putDestino = async (req, res, next) => {
     try {
         const id = parseInt(req.params.id);
         if (isNaN(id)) {
-            return res.status(400).json({error: "El ID debe ser un numero valido"});
+            return res.status(400).json({ error: "El ID debe ser un numero valido" });
         }
 
-        //Ejecutar validaciones sobre el body
-        const errors = validateDestino(req.body);
+        const { translations, budget } = req.body;
+
+        // Validar traducciones (manual, misma función que en POST)
+        const errors = validateTranslations(translations);
+
+        // Validar budget
+        if (budget === undefined || budget === null || isNaN(Number(budget)) || Number(budget) <= 0) {
+            errors.push({
+                field: "budget",
+                message: "El presupuesto es obligatorio y debe ser un número mayor a 0",
+            });
+        }
+
         if (errors.length > 0) {
             return res.status(400).json({
-                error: "Datos invalidos",
+                error: "Datos inválidos",
                 details: errors,
             });
         }
 
-        //Verificar que el destino exista
+        // Verificar que el destino exista
         const existente = await getDestinoById(id);
         if (!existente) {
-            return res.status(404).json({error: "Destino no encontrado"});
+            return res.status(404).json({ error: "Destino no encontrado" });
         }
 
-        //Actualizar destino
         const destino = await updateDestino(id, req.body);
         res.status(200).json(destino);
     } catch (error) {
