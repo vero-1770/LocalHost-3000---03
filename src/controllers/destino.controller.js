@@ -4,7 +4,7 @@ import { getAllDestinos,
          updateDestino, 
          deleteDestino,
         } from "../services/destino.service.js";
-import { validateDestino } from "../validations/destino.validation.js";
+import { validateDestino, validateTranslations } from "../validations/destino.validation.js";
 import { formatDestino } from "../utils/destinoFormatter.js";
 
 export const getDestinos = async (req, res, next) => {
@@ -47,11 +47,22 @@ export const getDestino = async (req, res, next) => {
 
 export const postDestino = async (req, res, next) => {
     try {
-        const errors = validateDestino(req.body);
+        const { translations, budget } = req.body;
+
+        // Validar las traducciones (sin librerías)
+        const errors = validateTranslations(translations);
+
+        // Validar budget (campo propio del destino)
+        if (budget === undefined || budget === null || isNaN(Number(budget)) || Number(budget) <= 0) {
+            errors.push({
+                field: "budget",
+                message: "El presupuesto es obligatorio y debe ser un número mayor a 0",
+            });
+        }
 
         if (errors.length > 0) {
             return res.status(400).json({
-                error: "Datos invalidos",
+                error: "Datos inválidos",
                 details: errors,
             });
         }

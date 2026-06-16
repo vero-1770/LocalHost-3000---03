@@ -24,11 +24,20 @@ export const getDestinoById = async (id) => {
 export const createDestino = async (data) => {
     return await prisma.destination.create({
         data: {
-            name: data.nombre,
-            description: data.descripcion,
-            country: data.pais,
-            location: data.ciudad,
-            budget: Number(data.precio),
+            budget: Number(data.budget),
+            // Si el body trae más campos propios del destino tenemos que agregarlos aca
+            translations: {
+                create: data.translations.map((t) => ({
+                    language: t.language,
+                    name: t.name,
+                    description: t.description,
+                    country: t.country,
+                    location: t.location,
+                })),
+            },
+        },
+        include: {
+            translations: true, //devolvemos el destino con sus traducciones creadas
         },
     });
 };
