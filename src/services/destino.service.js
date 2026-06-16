@@ -46,11 +46,20 @@ export const updateDestino = async (id, data) => {
     return await prisma.destination.update({
         where: { id },
         data: {
-            name: data.nombre,
-            description: data.descripcion,
-            country: data.pais,
-            location: data.ciudad,
-            budget: Number(data.precio),
+            budget: Number(data.budget),
+            translations: {
+                deleteMany: {},  // borra TODAS las traducciones actuales del destino
+                create: data.translations.map((t) => ({
+                    language: t.language,
+                    name: t.name,
+                    description: t.description,
+                    country: t.country,
+                    location: t.location,
+                })),
+            },
+        },
+        include: {
+            translations: true,
         },
     });
 };
