@@ -11,7 +11,7 @@ import { verifyToken } from "../middlewares/authMiddleware.js";
 const router = Router();
 
 router.get("/", getDestinos);
-router.get("/:id", getDestino);
+router.get("/:id", verifyToken, getDestino);
 router.post("/",verifyToken, postDestino);
 router.put("/:id",verifyToken, putDestino);
 router.delete("/:id",verifyToken, deleteDestinoController);

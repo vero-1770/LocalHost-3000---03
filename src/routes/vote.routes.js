@@ -8,7 +8,7 @@ import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.get("/users/:userId",verifyToken, getVotes);
+router.get("/", verifyToken, getVotes);
 router.post("/",verifyToken, postVote);
 router.delete("/",verifyToken, deleteVote);
 
