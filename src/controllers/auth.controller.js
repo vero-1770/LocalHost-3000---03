@@ -11,40 +11,56 @@ const generateAccessAndRefreshTokens = (userId) => {
 };
 
 export const login = async (req, res) => {
-    const { email, password } = req.body;
-    
-    // Buscar usuario
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
-        return res.status(401).json({ message: "Credenciales incorrectas" });
-    }
+    try {
+        const { email, password } = req.body;
 
-    // Generar tokens
-    const { accessToken, refreshToken } = generateAccessAndRefreshTokens(user.id);
+        console.log("EMAIL:", email);
 
-    // Guardar Refresh Token en BD
-    await prisma.user.update({
-        where: { id: user.id },
-        data: { refreshToken }
-    });
+        const user = await prisma.user.findUnique({
+            where: { email }
+        });
 
-    // Enviar el Refresh Token en una Cookie HttpOnly
-    res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path:'/',
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
-    });
+        console.log("USER:", user);
 
-    res.json({
-        accessToken,
-        user: {
-            id: user.id,
-            username: user.username,
-            email: user.email
+        if (!user) {
+            return res.status(401).json({
+                message: "Usuario no encontrado"
+            });
         }
-    });
+
+        const passwordOk = await bcrypt.compare(
+            password,
+            user.passwordHash
+        );
+
+        console.log("PASSWORD OK:", passwordOk);
+
+        if (!passwordOk) {
+            return res.status(401).json({
+                message: "Credenciales incorrectas"
+            });
+        }
+
+        const { accessToken, refreshToken } =
+            generateAccessAndRefreshTokens(user.id);
+
+        res.json({
+            accessToken,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+        console.error("LOGIN ERROR:");
+        console.error(error);
+
+        return res.status(500).json({
+            error: error.message
+        });
+    }
 };
 
 export const refreshToken = async (req, res) => {
@@ -72,22 +88,32 @@ export const refreshToken = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-    
-    const userId = req.user.id; 
+    try {
+        const refreshToken = req.cookies?.refreshToken;
 
-    // Limpiamos el refresh token de la BD
-    await prisma.user.update({
-        where: { id: userId },
-        data: { refreshToken: null }
-    });
+        if (refreshToken) {
+            const decoded = jwt.verify(
+                refreshToken,
+                process.env.REFRESH_TOKEN_SECRET
+            );
 
-    // Limpiamos la cookie
-    res.clearCookie('refreshToken', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path:'/'
-    });
+            await prisma.user.update({
+                where: { id: decoded.id },
+                data: { refreshToken: null }
+            });
+        }
 
-    res.status(200).json({ message: "Sesión cerrada correctamente" });
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/'
+        });
+
+        return res.status(200).json({ message: "Logout exitoso" });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(200).json({ message: "Logout forzado" });
+    }
 };

@@ -1,7 +1,22 @@
 import { prisma } from "../prisma/prismaClient.js";
 
 export const addVote = async (userId, destinationId, score) => {
+
   return await prisma.$transaction(async (tx) => {
+
+  const existe = await tx.vote.findUnique({
+    where:{
+      userId_destinationId:{
+        userId,
+        destinationId
+      }
+    }
+  });
+
+
+  if(existe){
+    throw new Error("Ya votaste este destino");
+  }
     // Crear el voto
     const vote = await tx.vote.create({
       data: {
@@ -15,9 +30,13 @@ export const addVote = async (userId, destinationId, score) => {
     const destination = await tx.destination.update({
       where: { id: destinationId },
       data: {
-        totalScore: { increment: score },
-        votesCount: { increment: 1 },
-      },
+        totalScore: {
+          increment: score
+        },
+        votesCount: {
+          increment: 1
+        }
+      }
     });
 
     // Recalcular el rating
@@ -27,7 +46,19 @@ export const addVote = async (userId, destinationId, score) => {
       data: { rating: newRating },
     });
 
-    return vote;
+     const destinoActualizado = await tx.destination.update({
+      where:{
+        id: destinationId
+      },
+      data:{
+        rating:newRating
+      }
+    });
+
+    return {
+      vote,
+      destination: destinoActualizado
+    };
   });
 };
 
