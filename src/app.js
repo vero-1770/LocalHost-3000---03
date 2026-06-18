@@ -14,14 +14,16 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 const app = express();
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL, 
-            process.env.VITE_API_URL,
-            "http://localhost:5173"
+    // Agregamos el localhost de Vite directamente en la lista de permitidos
+    origin: [
+      process.env.FRONTEND_URL, 
+      process.env.VITE_API_URL, 
+      "http://localhost:5173"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
-}));
+}));det=
 
 app.use(express.json());
 app.use(cookieParser());
