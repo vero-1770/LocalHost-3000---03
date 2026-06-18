@@ -11,10 +11,5 @@
       "src": "/(.*)",
       "dest": "src/index.js"
     }
-  ],
-  "scripts": {
-  "dev": "next dev", 
-  "build": "prisma generate && next build",
-  "start": "next start"
-}
+  ]
 }
