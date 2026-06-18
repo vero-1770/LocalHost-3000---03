@@ -44,6 +44,21 @@ export const login = async (req, res) => {
         const { accessToken, refreshToken } =
             generateAccessAndRefreshTokens(user.id);
 
+        // Guardar refreshToken en la BD
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { refreshToken }
+        });
+
+        // Enviar refreshToken en cookie
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+        });
+
         res.json({
             accessToken,
             user: {
