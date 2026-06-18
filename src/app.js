@@ -14,7 +14,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: [process.env.FRONTEND_URL, process.env.VITE_API_URL],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
