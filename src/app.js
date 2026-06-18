@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     status: "ok",
-    message: "API funcionando correctamente",
+    message: "¡TravelHub funcionando correctamente!",
   });
 });
 
