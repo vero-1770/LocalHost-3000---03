@@ -1,31 +1,44 @@
 import { prisma } from "../prisma/prismaClient.js";
 
-export const getAllDestinos = async (page = 1, limit = 9) => {
+export const getAllDestinos = async (page = 1, limit = 9, filtro = '', campo = 'search') => {
     const skip = (page - 1) * limit;
 
     return await prisma.destination.findMany({
         skip: skip,
         take: limit,
         include: {
+            images: true,
             translations: true,
         },
     });
 };
 
-export const getDestinoById = async (id) => {
-    return await prisma.destination.findUnique({
+export const getDestinoById = async (id, userId) => {
+    const destino = await prisma.destination.findUnique({
         where: { id },
         include: {
+            images: true,
             translations: true,
+            votes: userId
+                ? { where: { userId } }
+                : false,
         },
     });
+
+    if (!destino) {
+        return null;
+    }
+
+    return {
+        ...destino,
+        userVote: destino.votes?.[0]?.score ?? null,
+    };
 };
 
 export const createDestino = async (data) => {
     return await prisma.destination.create({
         data: {
             budget: Number(data.budget),
-            // Si el body trae más campos propios del destino tenemos que agregarlos aca
             translations: {
                 create: data.translations.map((t) => ({
                     language: t.language,
@@ -37,7 +50,7 @@ export const createDestino = async (data) => {
             },
         },
         include: {
-            translations: true, //devolvemos el destino con sus traducciones creadas
+            translations: true,
         },
     });
 };
@@ -48,7 +61,7 @@ export const updateDestino = async (id, data) => {
         data: {
             budget: Number(data.budget),
             translations: {
-                deleteMany: {},  // borra TODAS las traducciones actuales del destino
+                deleteMany: {},
                 create: data.translations.map((t) => ({
                     language: t.language,
                     name: t.name,

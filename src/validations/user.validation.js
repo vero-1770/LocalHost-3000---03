@@ -31,6 +31,19 @@ export const validateUser = (body) => {
         });
     }
 
+    // Validar password
+    if (!body.password || body.password.trim() === "") {
+        errors.push({
+            field: "password",
+            message: "La contraseña es obligatoria",
+        });
+    } else if (body.password.length < 6) {
+        errors.push({
+            field: "password",
+            message: "La contraseña debe tener al menos 6 caracteres",
+        });
+    }
+
     //Validar avatarUrl si viene
     if (body.avatarUrl !== undefined && body.avatarUrl !==null) {
         if (typeof body.avatarUrl !== "string" || body.avatarUrl.trim() === "") {
@@ -40,6 +53,7 @@ export const validateUser = (body) => {
             });
         }
     }
+
     return errors;
 };
 
