@@ -13,16 +13,36 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
+// Middleware manual para forzar CORS en Vercel antes de cualquier ruta
+app.use((req, res, next) => {
+    const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+    const origin = req.headers.origin;
+    
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    // Si es una petición de preflight (OPTIONS), respondemos inmediatamente con 200 OK
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
+// Abajo de esto dejas el cors estándar y el resto de tus rutas como estaban...
 app.use(cors({
     // Agregamos el localhost de Vite directamente en la lista de permitidos
     origin: [
       process.env.FRONTEND_URL, 
-      process.env.VITE_API_URL, 
-      "http://localhost:5173",
+      process.env.VITE_API_URL,
       "http://localhost:3000"
     ],
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
