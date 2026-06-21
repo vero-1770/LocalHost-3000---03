@@ -13,37 +13,16 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
-// Middleware manual para forzar CORS en Vercel antes de cualquier ruta
-app.use((req, res, next) => {
-    const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
-    const origin = req.headers.origin;
-    
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-    
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-    // Si es una petición de preflight (OPTIONS), respondemos inmediatamente con 200 OK
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
-
-// Abajo de esto dejas el cors estándar y el resto de tus rutas como estaban...
+// Configuramos un solo CORS que sirva pa' todo el mundo
 app.use(cors({
-    // Agregamos el localhost de Vite directamente en la lista de permitidos
     origin: [
-      process.env.FRONTEND_URL, 
-      process.env.VITE_API_URL,
-      "http://localhost:3000"
-    ],
+      "http://localhost:5173", // Tu React de Vite (¡Imprescindible aquí!)
+      "http://localhost:3000",
+      process.env.FRONTEND_URL  // Tu URL de producción cuando lo montes
+    ].filter(Boolean), // Esto limpia si alguna variable viene undefined
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
 
 app.use(express.json());
@@ -56,6 +35,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Tus rutas quedan igualito...
 app.use("/api/destinos", destinoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/accommodations", accommodationRoutes);
@@ -65,7 +45,6 @@ app.use("/api/votes", voteRoutes);
 app.use("/api/images", imageRoutes);
 app.use("/api/auth", authRoutes);
 
-//Debe ir SIEMPRE al final, despues de todas las rutas
 app.use(errorHandler);
 
 export default app;
