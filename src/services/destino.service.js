@@ -17,8 +17,8 @@ export const getDestinoById = async (id, userId) => {
     const destino = await prisma.destination.findUnique({
         where: { id },
         include: {
-            images: true,
             translations: true,
+            images: true,
             votes: userId
                 ? { where: { userId } }
                 : false,
