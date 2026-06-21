@@ -10,6 +10,15 @@ const generateAccessAndRefreshTokens = (userId) => {
     return { accessToken, refreshToken };
 };
 
+// Configuración de cookie compartida para Producción (Vercel) y Local
+const COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: true,        // Forzado en true porque Vercel maneja HTTPS sí o sí
+    sameSite: 'none',    // VITAL: Permite enviar cookies entre el dominio de Vercel y tu localhost:5173
+    path: '/',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+};
+
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -50,14 +59,8 @@ export const login = async (req, res) => {
             data: { refreshToken }
         });
 
-        // Enviar refreshToken en cookie
-        res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            path: '/',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
-        });
+        // Enviar refreshToken en cookie con las nuevas opciones para Vercel
+        res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
 
         res.json({
             accessToken,
@@ -79,7 +82,6 @@ export const login = async (req, res) => {
 };
 
 export const refreshToken = async (req, res) => {
-    // Obtenemos el token de las cookies que envía el navegador
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) return res.status(401).json({ message: "No autorizado" });
@@ -95,6 +97,9 @@ export const refreshToken = async (req, res) => {
         
         // Actualizar refresh token en BD
         await prisma.user.update({ where: { id: user.id }, data: { refreshToken: newTokens.refreshToken } });
+
+        // CORRECCIÓN: Volvemos a inyectar la cookie renovada en el navegador
+        res.cookie('refreshToken', newTokens.refreshToken, COOKIE_OPTIONS);
 
         res.json(newTokens);
     } catch (err) {
@@ -118,10 +123,11 @@ export const logout = async (req, res) => {
             });
         }
 
+        // Limpiamos la cookie usando la misma configuración de origen cruzado
         res.clearCookie('refreshToken', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'none',
             path: '/'
         });
 
