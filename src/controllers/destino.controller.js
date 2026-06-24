@@ -12,6 +12,7 @@ export const getDestinos = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 9;
+        const lang = req.query.lang || "es";
 
         let campo = 'todos';
         let filtro = '';
@@ -38,6 +39,7 @@ export const getDestinos = async (req, res, next) => {
         const destinos = await getAllDestinos(page, limit, campo, filtro);
         return res.status(200).json(destinos);
 
+        res.status(200).json(destinosFormateados);
     } catch (error) {
         next(error);
     }
@@ -51,7 +53,9 @@ export const getDestino = async (req, res, next) => {
             return res.status(400).json({ error: "El ID debe ser un número válido" });
         }
 
-        const destino = await getDestinoById(id, req.user?.id);
+        const lang = req.query.lang || "es";
+
+        const destino = await getDestinoById(id);
 
         if (!destino) {
             return res.status(404).json({ error: "Destino no encontrado" });
@@ -65,7 +69,18 @@ export const getDestino = async (req, res, next) => {
 
 export const postDestino = async (req, res, next) => {
     try {
-        const errors = validateDestino(req.body);
+        const { translations, budget } = req.body;
+
+        // Validar las traducciones (sin librerías)
+        const errors = validateTranslations(translations);
+
+        // Validar budget (campo propio del destino)
+        if (budget === undefined || budget === null || isNaN(Number(budget)) || Number(budget) <= 0) {
+            errors.push({
+                field: "budget",
+                message: "El presupuesto es obligatorio y debe ser un número mayor a 0",
+            });
+        }
 
         if (errors.length > 0) {
             return res.status(400).json({

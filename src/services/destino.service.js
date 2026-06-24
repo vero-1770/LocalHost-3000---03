@@ -47,6 +47,7 @@ export const getDestinoById = async (id, userId) => {
             id
         },
         include: {
+            translations: true,
             images: true,
             votes: userId 
                 ? {
@@ -71,11 +72,20 @@ export const getDestinoById = async (id, userId) => {
 export const createDestino = async (data) => {
     return await prisma.destination.create({
         data: {
-            name: data.nombre,
-            description: data.descripcion,
-            country: data.pais,
-            location: data.ciudad,
-            budget: Number(data.precio),
+            budget: Number(data.budget),
+            // Si el body trae más campos propios del destino tenemos que agregarlos aca
+            translations: {
+                create: data.translations.map((t) => ({
+                    language: t.language,
+                    name: t.name,
+                    description: t.description,
+                    country: t.country,
+                    location: t.location,
+                })),
+            },
+        },
+        include: {
+            translations: true, //devolvemos el destino con sus traducciones creadas
         },
     });
 };
@@ -84,11 +94,20 @@ export const updateDestino = async (id, data) => {
     return await prisma.destination.update({
         where: { id },
         data: {
-            name: data.nombre,
-            description: data.descripcion,
-            country: data.pais,
-            location: data.ciudad,
-            budget: Number(data.precio),
+            budget: Number(data.budget),
+            translations: {
+                deleteMany: {},  // borra TODAS las traducciones actuales del destino
+                create: data.translations.map((t) => ({
+                    language: t.language,
+                    name: t.name,
+                    description: t.description,
+                    country: t.country,
+                    location: t.location,
+                })),
+            },
+        },
+        include: {
+            translations: true,
         },
     });
 };

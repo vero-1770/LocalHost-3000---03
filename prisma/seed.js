@@ -7,13 +7,34 @@ import { PrismaPg } from "@prisma/adapter-pg";
 const connectionString = process.env.DATABASE_URL;
 const adapter = new PrismaPg({ connectionString });
 
-const prisma = new PrismaClient({adapter});
+const prisma = new PrismaClient({ adapter });
 
 // Importo API
 import apiDestinos from "./destinos.json" with { type: "json" };
 
 // Guardaremos los destinos creados en un array para poder referenciarlos en las interacciones
 const destinosCreadosdeBase = [];
+
+// ----------------------------------------------------------------------------
+// HELPERS DE TRADUCCIÓN
+// ----------------------------------------------------------------------------
+
+// Diccionario para traducir países al inglés (solo los que cambian de escritura)
+const paisesEn = {
+  "Perú": "Peru",
+  // El resto (Argentina, Venezuela, Chile, Colombia, Ecuador, Puerto Rico)
+  // se escriben igual en inglés, por eso no hace falta listarlos.
+};
+
+// Devuelve el país en inglés, o el mismo nombre si no está en el diccionario
+const traducirPais = (pais) => paisesEn[pais] || pais;
+
+// Genera una descripción en inglés a partir del nombre, país y ubicación
+const generarDescripcionEn = (nombre, country, location) => {
+  return `${nombre} is a tourist destination located in ${location}, ${traducirPais(country)}.`;
+};
+
+// ----------------------------------------------------------------------------
 
 async function main() {
   console.log("🌱 Iniciando inyección de datos...");
@@ -24,6 +45,7 @@ async function main() {
   await prisma.favorite.deleteMany();
   await prisma.accommodation.deleteMany();
   await prisma.image.deleteMany();
+  await prisma.destinationTranslation.deleteMany(); // antes de destination
   await prisma.destination.deleteMany();
   await prisma.user.deleteMany();
   await prisma.transportation.deleteMany();
@@ -84,9 +106,9 @@ async function main() {
     mapaTransportes[t.type.toLowerCase()] = tCreado.id;
   }
 
-  // TABLAS: DESTINATION, IMAGE y ACCOMMODATION
-  console.log("🗺️ Insertando los destinos con imágenes y alojamientos...");
-  
+  // TABLAS: DESTINATION, DESTINATION_TRANSLATION, IMAGE y ACCOMMODATION
+  console.log("🗺️ Insertando los destinos con traducciones, imágenes y alojamientos...");
+
   for (const dest of apiDestinos) {
     const nombreLimpioRuta = dest.nombre.replace(/\s+/g, "");
 
@@ -95,21 +117,38 @@ async function main() {
       .map(tipo => mapaTransportes[tipo.trim().toLowerCase()])
       .filter(id => id !== undefined);
 
-    const ratingCalculado = dest.cantidadVotos > 0 
-      ? parseFloat((dest.puntuacionTotal / dest.cantidadVotos).toFixed(1)) 
+    const ratingCalculado = dest.cantidadVotos > 0
+      ? parseFloat((dest.puntuacionTotal / dest.cantidadVotos).toFixed(1))
       : 0;
 
     const nuevoDestino = await prisma.destination.create({
       data: {
-        name: dest.nombre,
-        description: dest.descripcion,
-        location: dest.ubicacion,
-        country: dest.pais,
+        // Campos que QUEDAN en Destination (no dependen del idioma)
         budget: dest.presupuesto,
         rating: ratingCalculado,
         totalScore: dest.puntuacionTotal,
         votesCount: dest.cantidadVotos,
-        
+
+        // TABLA: DESTINATION_TRANSLATION (es + en)
+        translations: {
+          create: [
+            {
+              language: "es",
+              name: dest.nombre,
+              description: dest.descripcion,
+              country: dest.pais,
+              location: dest.ubicacion,
+            },
+            {
+              language: "en",
+              name: dest.nombre, // el nombre propio no cambia
+              description: generarDescripcionEn(dest.nombre, dest.pais, dest.ubicacion),
+              country: traducirPais(dest.pais),
+              location: dest.ubicacion, // la ubicación no cambia
+            },
+          ],
+        },
+
         // TABLA: IMAGE
         images: {
           create: [
@@ -128,7 +167,7 @@ async function main() {
             pricePerNight: aloj.presupuesto,
             type: aloj.tipo,
             // IMPORTANTE: Tu modelo debe aceptar Int? (nullable) para stars
-            stars: aloj.tipo === "Hotel" ? 4 : null 
+            stars: aloj.tipo === "Hotel" ? 4 : null
           }))
         },
 
@@ -139,16 +178,18 @@ async function main() {
       }
     });
 
-    destinosCreadosdeBase.push(nuevoDestino);
+    // Guardamos el destino + su nombre original para poder buscarlo en favoritos/votos
+    // (el objeto nuevoDestino ya NO tiene 'name', porque se movió a las traducciones)
+    destinosCreadosdeBase.push({ ...nuevoDestino, nombreOriginal: dest.nombre });
   }
 
   // TABLAS: FAVORITE Y VOTE (Interacciones cruzadas)
   console.log("❤️ Vinculando interacciones de favoritos y votaciones...");
 
-  // Búsquedas seguras por nombre y país para evitar el bug de "San Juan"
-  const bariloche = destinosCreadosdeBase.find(d => d.name === "Bariloche");
-  const sanMartin = destinosCreadosdeBase.find(d => d.name === "San Martín de los Andes");
-  const losRoques = destinosCreadosdeBase.find(d => d.name === "Los Roques");
+  // Búsquedas seguras por nombreOriginal para evitar el bug de "San Juan"
+  const bariloche = destinosCreadosdeBase.find(d => d.nombreOriginal === "Bariloche");
+  const sanMartin = destinosCreadosdeBase.find(d => d.nombreOriginal === "San Martín de los Andes");
+  const losRoques = destinosCreadosdeBase.find(d => d.nombreOriginal === "Los Roques");
 
   // Simulación: Gabriel
   if (bariloche && sanMartin) {
