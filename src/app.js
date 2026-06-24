@@ -11,44 +11,44 @@ import imageRoutes from "./routes/image.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
+// Inicializo aplicación
 const app = express();
 
-// Middleware manual para forzar CORS en Vercel antes de cualquier ruta
-app.use((req, res, next) => {
-    const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
-    const origin = req.headers.origin;
-    
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-    
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+// Centralizo los origenes permitidos (producción + local)
+const allowedOrigins = [
+  "http://localhost:5173",// LOCAL
+  process.env.FRONTEND_URL// DOMINIO DE PRODUCCIÓN VERCEL
+].filter(Boolean);// evitamos valores undefined
 
-    // Si es una petición de preflight (OPTIONS), respondemos inmediatamente con 200 OK
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
-
-// Abajo de esto dejas el cors estándar y el resto de tus rutas como estaban...
+// Configuración de cors
 app.use(cors({
-    // Agregamos el localhost de Vite directamente en la lista de permitidos
-    origin: [
-      process.env.FRONTEND_URL, 
-      process.env.VITE_API_URL,
-      "http://localhost:3000"
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: (origin, callback) => {
+      // Si la petición no tiene origen (como Postman o el Health Check)
+      // o el origen está explícitamente listado, permitimos el acceso.
+      if(!origin || allowedOrigins.includes(origin)){
+        callback(null, true);
+      }else{
+        callback(new Error(`Bloqueado por CORS: El origen ${origin} no está autorizado.`));
+      }
+    },
+    credentials: true,// permitimos el envío de Access/Refresh Cookies
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
 }));
 
+// Middlewares
 app.use(express.json());
 app.use(cookieParser());
 
+// Ruta raíz para evitar error 404
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "¡El backend de TravelHub está online y funcionando de forma serverless!",
+  });
+});
+
+// Endpoint de monitoreo
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     status: "ok",
@@ -56,6 +56,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Registros de rutas de la aplicación
 app.use("/api/destinos", destinoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/accommodations", accommodationRoutes);
@@ -65,7 +66,7 @@ app.use("/api/votes", voteRoutes);
 app.use("/api/images", imageRoutes);
 app.use("/api/auth", authRoutes);
 
-//Debe ir SIEMPRE al final, despues de todas las rutas
+//Manejo centralizado de errores. Debe ir SIEMPRE al final, despues de todas las rutas
 app.use(errorHandler);
 
 export default app;
