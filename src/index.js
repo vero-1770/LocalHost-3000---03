@@ -1,20 +1,26 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import app from "./app.js";
 
-dotenv.config();
-
-// 1. Ruta raíz para que Vercel no te tire 404 al entrar al link principal
-app.get("/", (req, res) => {
-  res.send({ status: "ok", message: "¡El backend de TravelHub está online y funcionando!" });
-});
-
-// 2. El listen condicional: Solo corre en tu compu (local), Vercel lo ignora y lo maneja de forma serverless
-if (process.env.NODE_ENV !== "production") {
+// Listen condicional
+if(process.env.NODE_ENV !== "production"){
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Servidor corriendo en puerto ${PORT}`);
+
+  const server = app.listen(PORT, () => {
+    console.log(`===========================================`);
+    console.log(`🚀 TravelHub API en ejecución local`);
+    console.log(`📡 Puerto: ${PORT}`);
+    console.log(`🌍 Entorno: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`===========================================`);
+  });
+
+  // Evitamos dejar puertos abiertos o conexiones colgadas en la BD al reiniciar nodemon
+  process.on("SIGTERM", () => {
+    console.log("Cerrando el servidor HTTP...");
+    server.close(() => {
+      console.log("Servidor HTTP cerrado.");
+    });
   });
 }
 
-// 3. Exportación vital para Vercel
+// Exportación requerida para la arquitectura Serverless de Vercel
 export default app;

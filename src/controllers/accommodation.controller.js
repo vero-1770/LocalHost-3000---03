@@ -6,6 +6,7 @@ import {
   deleteAccommodation,
 } from "../services/accommodation.service.js";
 import { validateAccommodation } from "../validations/accommodation.validation.js";
+import { prisma } from "../prisma/prismaClient.js";
 
 export const getAccommodations = async (req, res, next) => {
   try {
@@ -44,11 +45,10 @@ export const postAccommodation = async (req, res, next) => {
       });
     }
 
-    // Verificar que el destino exista
-    const { prisma } = await import("../prisma/prismaClient.js");
     const destino = await prisma.destination.findUnique({
       where: { id: Number(req.body.destinationId) },
     });
+    
     if (!destino) {
       return res.status(404).json({ error: "El destino indicado no existe" });
     }
@@ -80,11 +80,10 @@ export const putAccommodation = async (req, res, next) => {
       return res.status(404).json({ error: "Alojamiento no encontrado" });
     }
 
-    // Verificar que el destino exista
-    const { prisma } = await import("../prisma/prismaClient.js");
     const destino = await prisma.destination.findUnique({
       where: { id: Number(req.body.destinationId) },
     });
+    
     if (!destino) {
       return res.status(404).json({ error: "El destino indicado no existe" });
     }

@@ -1,11 +1,12 @@
-import { getAllDestinos, 
-         getDestinoById, 
-         createDestino,
-         updateDestino, 
-         deleteDestino,
-        } from "../services/destino.service.js";
-import { validateDestino, validateTranslations } from "../validations/destino.validation.js";
-import { formatDestino } from "../utils/destinoFormatter.js";
+import { 
+    getAllDestinos, 
+    getDestinoById, 
+    createDestino,
+    updateDestino, 
+    deleteDestino,
+} from "../services/destino.service.js";
+
+import { validateDestino } from "../validations/destino.validation.js";
 
 export const getDestinos = async (req, res, next) => {
     try {
@@ -13,8 +14,30 @@ export const getDestinos = async (req, res, next) => {
         const limit = parseInt(req.query.limit) || 9;
         const lang = req.query.lang || "es";
 
-        const destinos = await getAllDestinos(page, limit);
-        const destinosFormateados = destinos.map((d) => formatDestino(d, lang));
+        let campo = 'todos';
+        let filtro = '';
+
+        const { country, location, description, name, search, q } = req.query;
+
+        if (country) {
+            campo = 'country';
+            filtro = country;
+        } else if (location) {
+            campo = 'location';
+            filtro = location;
+        } else if (description) {
+            campo = 'description';
+            filtro = description;
+        } else if (name) {
+            campo = 'name';
+            filtro = name;
+        } else if (search || q) {
+            campo = 'todos';
+            filtro = search || q; // Para cuando seleccionan "Todos" en el frontend
+        }
+
+        const destinos = await getAllDestinos(page, limit, campo, filtro);
+        return res.status(200).json(destinos);
 
         res.status(200).json(destinosFormateados);
     } catch (error) {
@@ -27,7 +50,7 @@ export const getDestino = async (req, res, next) => {
         const id = parseInt(req.params.id);
 
         if (isNaN(id)) {
-            return res.status(400).json({ error: "El ID debe ser un numero valido" });
+            return res.status(400).json({ error: "El ID debe ser un número válido" });
         }
 
         const lang = req.query.lang || "es";
@@ -38,8 +61,7 @@ export const getDestino = async (req, res, next) => {
             return res.status(404).json({ error: "Destino no encontrado" });
         }
 
-        // Aplanamos el destino con su traducción en el idioma pedido
-        res.status(200).json(formatDestino(destino, lang));
+        return res.status(200).json(destino);
     } catch (error) {
         next(error);
     }
@@ -68,7 +90,7 @@ export const postDestino = async (req, res, next) => {
         }
 
         const destino = await createDestino(req.body);
-        res.status(201).json(destino);
+        return res.status(201).json(destino);
     } catch (error) {
         next(error);
     }
@@ -78,22 +100,10 @@ export const putDestino = async (req, res, next) => {
     try {
         const id = parseInt(req.params.id);
         if (isNaN(id)) {
-            return res.status(400).json({ error: "El ID debe ser un numero valido" });
+            return res.status(400).json({ error: "El ID debe ser un número válido" });
         }
 
-        const { translations, budget } = req.body;
-
-        // Validar traducciones (manual, misma función que en POST)
-        const errors = validateTranslations(translations);
-
-        // Validar budget
-        if (budget === undefined || budget === null || isNaN(Number(budget)) || Number(budget) <= 0) {
-            errors.push({
-                field: "budget",
-                message: "El presupuesto es obligatorio y debe ser un número mayor a 0",
-            });
-        }
-
+        const errors = validateDestino(req.body);
         if (errors.length > 0) {
             return res.status(400).json({
                 error: "Datos inválidos",
@@ -101,7 +111,6 @@ export const putDestino = async (req, res, next) => {
             });
         }
 
-        // Verificar que el destino exista
         const existente = await getDestinoById(id);
 
         if (!existente) {
@@ -109,32 +118,27 @@ export const putDestino = async (req, res, next) => {
         }
 
         const destino = await updateDestino(id, req.body);
-
-        res.status(200).json(destino);
+        return res.status(200).json(destino);
 
     } catch (error) {
-
         next(error);
     }
 };
 
 export const deleteDestinoController = async (req, res, next) => {
     try {
-        //Obtener y validar el ID
         const id = parseInt(req.params.id);
         if (isNaN(id)) {
-            return res.status(400).json({ error: "El ID debe ser un numero valido"});
+            return res.status(400).json({ error: "El ID debe ser un número válido" });
         }
 
-        //Verificar que el destino exista
         const existente = await getDestinoById(id);
         if (!existente) {
-            return res.status(404).json({ error: "Destino no encontrado"});
+            return res.status(404).json({ error: "Destino no encontrado" });
         }
 
-        //Eliminar el destino
         await deleteDestino(id);
-        res.status(200).json({message: "Destino eliminado correctamente"});
+        return res.status(200).json({ message: "Destino eliminado correctamente" });
     } catch (error) {
         next(error);
     }

@@ -1,58 +1,37 @@
 export const validateDestino = (body) => {
     const errors = [];
 
-    //Validar objeto vacio
+    // Validar objeto vacío
     if (!body || Object.keys(body).length === 0) {
-        errors.push({
-            field: "body",
-            message: "El cuerpo de la solicitud no puede estar vacio",
-        });
+        errors.push({ field: "body", message: "El cuerpo de la solicitud no puede estar vacío" });
         return errors;
     }
 
-    //Validar nombre
-    if (!body.nombre || body.nombre.trim() === "") {
-        errors.push({
-            field: "nombre",
-            message: "El nombre es obligatorio",
-        });
+    // Validar name
+    if (!body.name || body.name.trim() === "") {
+        errors.push({ field: "name", message: "El nombre es obligatorio" });
     }
 
-    //Validar descripcion
-    if (!body.descripcion || body.descripcion.trim() === "") {
-        errors.push({
-            field: "descripcion",
-            message: "La descripcion es obligatoria",
-        });
+    // Validar description
+    if (!body.description || body.description.trim() === "") {
+        errors.push({ field: "description", message: "La descripción es obligatoria" });
     }
 
-    //Validar pais
-    if (!body.pais || body.pais.trim() === "") {
-        errors.push({
-            field: "pais",
-            message: "El pais es obligatorio",
-        });
+    // Validar country
+    if (!body.country || body.country.trim() === "") {
+        errors.push({ field: "country", message: "El país es obligatorio" });
     }
 
-    //Validar ciudad
-    if (!body.ciudad || body.ciudad.trim() === "") {
-        errors.push({
-            field: "ciudad",
-            message: "La ciudad es obligatoria",
-        });
+    // Validar location
+    if (!body.location || body.location.trim() === "") {
+        errors.push({ field: "location", message: "La ubicación (location) es obligatoria" });
     }
 
-    //Validar Precio
-    if (body.precio === undefined || body.precio === null) {
-        errors.push({
-            field: "precio",
-            message: "El precio es obligatorio",
-        });
-    } else if (isNaN(Number(body.precio)) || Number(body.precio) <= 0){
-        errors.push({
-            field: "precio",
-            message: "El precio debe ser un numero valido mayor a 0",
-        });
+    // Validar budget (Precio)
+    if (body.budget === undefined || body.budget === null) {
+        errors.push({ field: "budget", message: "El presupuesto/precio es obligatorio" });
+    } else if (isNaN(Number(body.budget)) || Number(body.budget) <= 0){
+        errors.push({ field: "budget", message: "El presupuesto debe ser un número válido mayor a 0" });
     }
 
     return errors;

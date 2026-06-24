@@ -1,22 +1,21 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
-import { Pool } from 'pg';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaNeon } from '@prisma/adapter-neon';
 
-// Detectamos si estamos en un entorno con Neon (usando la variable DATABASE_URL de Neon)
-console.log('DATABASE_URL:', process.env.DATABASE_URL);
-const isNeon = process.env.DATABASE_URL?.includes('neon.tech');
+const connectionString = process.env.DATABASE_URL;
 
-let adapter;
-
-if (isNeon) {
-  // Configuración para Neon
-  adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
-} else {
-  // Configuración para Docker - Local
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  adapter = new PrismaPg(pool);
+if (!connectionString) {
+  console.error("❌ ERROR CRÍTICO: No se encontró la variable DATABASE_URL.");
+  process.exit(1);
 }
 
-export const prisma = new PrismaClient({ adapter });
+const prismaClientSingleton = () => {
+  return new PrismaClient();
+};
+
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
+
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prismaGlobal = prisma;
+}
+
+export { prisma };

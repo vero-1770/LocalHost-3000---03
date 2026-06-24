@@ -1,140 +1,163 @@
-// Importo modulos
 import { prisma } from '../prisma/prismaClient.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-// Genero Tokens
-const generateAccessAndRefreshTokens = (userId) => {
-    const accessToken = jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-    const refreshToken = jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+// Generamos tokens
+const generateAccessAndRefreshTokens = (userId, username) => {
+    // ACCESS TOKEN
+    const accessToken = jwt.sign(
+        { id: userId, username }, 
+        process.env.ACCESS_TOKEN_SECRET, 
+        { expiresIn: '15m' }// 
+    );
+    // REFRESH TOKEN
+    const refreshToken = jwt.sign(
+        { id: userId }, 
+        process.env.REFRESH_TOKEN_SECRET, 
+        { expiresIn: '7d' }
+    );
     return { accessToken, refreshToken };
 };
 
-// Configuración de cookie compartida para Producción (Vercel) y Local
+const isProduction = process.env.NODE_ENV === 'production';
+
+// COOKIE
 const COOKIE_OPTIONS = {
     httpOnly: true,
-    secure: true,        // Forzado en true porque Vercel maneja HTTPS sí o sí
-    sameSite: 'none',    // VITAL: Permite enviar cookies entre el dominio de Vercel y tu localhost:5173
     path: '/',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+    // En producción (Vercel) requiere HTTPS y None. En desarrollo (Local) acepta HTTP y Lax
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax'
 };
 
+// LOGIN
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log("EMAIL:", email);
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email y contraseña requeridos" });
+        }
 
         const user = await prisma.user.findUnique({
             where: { email }
         });
 
-        console.log("USER:", user);
-
         if (!user) {
-            return res.status(401).json({
-                message: "Usuario no encontrado"
-            });
+            return res.status(401).json({ message: "Usuario o contraseña incorrectos" });
         }
 
-        const passwordOk = await bcrypt.compare(
-            password,
-            user.passwordHash
-        );
-
-        console.log("PASSWORD OK:", passwordOk);
+        const passwordOk = await bcrypt.compare(password, user.passwordHash);
 
         if (!passwordOk) {
-            return res.status(401).json({
-                message: "Credenciales incorrectas"
-            });
+            return res.status(401).json({ message: "Usuario o contraseña incorrectos" });
         }
 
-        const { accessToken, refreshToken } =
-            generateAccessAndRefreshTokens(user.id);
+        // Generamos los tokens incluyendo el username en el payload del access
+        const { accessToken, refreshToken } = generateAccessAndRefreshTokens(user.id, user.username);
 
-        // Guardar refreshToken en la BD
+        // Guardar el hash o token en la base de datos Neon
         await prisma.user.update({
             where: { id: user.id },
             data: { refreshToken }
         });
 
-        // Enviar refreshToken en cookie con las nuevas opciones para Vercel
+        // Enviamos el refreshToken mediante cookie segura adaptada al entorno
         res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
 
-        res.json({
+        return res.json({
             accessToken,
             user: {
                 id: user.id,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                avatarUrl: user.avatarUrl
             }
         });
 
     } catch (error) {
-        console.error("LOGIN ERROR:");
-        console.error(error);
-
-        return res.status(500).json({
-            error: error.message
-        });
+        console.error("❌ Error detectado en Login:", error);
+        return res.status(500).json({ error: "Error interno del servidor en el proceso de autenticación" });
     }
 };
 
 export const refreshToken = async (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
+    // Buscamos el token en la cookie
+    const tokenFromCookie = req.cookies?.refreshToken;
 
-    if (!refreshToken) return res.status(401).json({ message: "No autorizado" });
+    if (!tokenFromCookie) {
+        return res.status(401).json({ message: "No autorizado: Sesión inexistente" });
+    }
 
     try {
-        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const decoded = jwt.verify(tokenFromCookie, process.env.REFRESH_TOKEN_SECRET);
         
-        // Verificar que el token existe en BD para este usuario
-        const user = await prisma.user.findFirst({ where: { id: decoded.id, refreshToken: refreshToken } });
-        if (!user) return res.status(403).json({ message: "Token inválido" });
-
-        const newTokens = generateAccessAndRefreshTokens(user.id);
+        // Verificamos estricta coincidencia en la BD
+        const user = await prisma.user.findUnique({ 
+            where: { id: decoded.id } 
+        });
         
-        // Actualizar refresh token en BD
-        await prisma.user.update({ where: { id: user.id }, data: { refreshToken: newTokens.refreshToken } });
+        if (!user || user.refreshToken !== tokenFromCookie) {
+            return res.status(403).json({ message: "Token inválido o revocado" });
+        }
 
-        // CORRECCIÓN: Volvemos a inyectar la cookie renovada en el navegador
+        // Emitimos la nueva pareja de tokens
+        const newTokens = generateAccessAndRefreshTokens(user.id, user.username);
+        
+        await prisma.user.update({ 
+            where: { id: user.id }, 
+            data: { refreshToken: newTokens.refreshToken } 
+        });
+
         res.cookie('refreshToken', newTokens.refreshToken, COOKIE_OPTIONS);
 
-        res.json(newTokens);
+        return res.json({ accessToken: newTokens.accessToken });
     } catch (err) {
-        res.status(403).json({ message: "Sesión expirada" });
+        console.error("❌ Error en renovación de Refresh Token:", err);
+        // Si el token falló por expiración, limpiamos la cookie
+        res.clearCookie('refreshToken', {
+            path: '/',
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'lax'
+        });
+        return res.status(403).json({ message: "Sesión expirada, por favor ingrese nuevamente" });
     }
 };
 
+// LOGOUT
 export const logout = async (req, res) => {
+    const clearOptions = {
+        path: '/',
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax'
+    };
+
     try {
-        const refreshToken = req.cookies?.refreshToken;
+        const tokenFromCookie = req.cookies?.refreshToken;
 
-        if (refreshToken) {
-            const decoded = jwt.verify(
-                refreshToken,
-                process.env.REFRESH_TOKEN_SECRET
-            );
-
-            await prisma.user.update({
-                where: { id: decoded.id },
-                data: { refreshToken: null }
-            });
+        if (tokenFromCookie) {
+            try {
+                const decoded = jwt.verify(tokenFromCookie, process.env.REFRESH_TOKEN_SECRET);
+                // Eliminamos el token de la BD
+                await prisma.user.update({
+                    where: { id: decoded.id },
+                    data: { refreshToken: null }
+                });
+            } catch (jwtError) {
+                // Si el token ya había expirado y jwt.verify falla, ignoramos el error de firma
+                // pero permitimos que continúe para limpiar la cookie de todos modos
+                console.error("Token inválido o expirado en logout:", jwtError.message);
+            }
         }
 
-        // Limpiamos la cookie usando la misma configuración de origen cruzado
-        res.clearCookie('refreshToken', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            path: '/'
-        });
-
+        res.clearCookie('refreshToken', clearOptions);
         return res.status(200).json({ message: "Logout exitoso" });
 
     } catch (error) {
-        console.error(error);
+        console.error("❌ Error en Logout:", error);
+        // Limpiamos la cookie pase lo que pase
+        res.clearCookie('refreshToken', clearOptions);
         return res.status(200).json({ message: "Logout forzado" });
     }
 };
