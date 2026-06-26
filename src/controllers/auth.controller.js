@@ -3,12 +3,12 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // Generamos tokens
-const generateAccessAndRefreshTokens = (userId, username) => {
+const generateAccessAndRefreshTokens = (userId, username, role) => {
     // ACCESS TOKEN
     const accessToken = jwt.sign(
-        { id: userId, username }, 
+        { id: userId, username, role }, 
         process.env.ACCESS_TOKEN_SECRET, 
-        { expiresIn: '15m' }// 
+        { expiresIn: '15m' }
     );
     // REFRESH TOKEN
     const refreshToken = jwt.sign(
@@ -55,7 +55,7 @@ export const login = async (req, res) => {
         }
 
         // Generamos los tokens incluyendo el username en el payload del access
-        const { accessToken, refreshToken } = generateAccessAndRefreshTokens(user.id, user.username);
+        const { accessToken, refreshToken } = generateAccessAndRefreshTokens(user.id, user.username, user.role);
 
         // Guardar el hash o token en la base de datos Neon
         await prisma.user.update({
@@ -72,7 +72,8 @@ export const login = async (req, res) => {
                 id: user.id,
                 username: user.username,
                 email: user.email,
-                avatarUrl: user.avatarUrl
+                avatarUrl: user.avatarUrl,
+                role: user.role
             }
         });
 
@@ -103,7 +104,7 @@ export const refreshToken = async (req, res) => {
         }
 
         // Emitimos la nueva pareja de tokens
-        const newTokens = generateAccessAndRefreshTokens(user.id, user.username);
+        const newTokens = generateAccessAndRefreshTokens(user.id, user.username, user.role);
         
         await prisma.user.update({ 
             where: { id: user.id }, 

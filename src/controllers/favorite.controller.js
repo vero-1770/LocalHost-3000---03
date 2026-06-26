@@ -8,11 +8,13 @@ import { prisma } from "../prisma/prismaClient.js";
 export const getFavorites = async (req, res, next) => {
   try {
     const userId = req.user.id;
+    const lang = req.query.lang || "es"; 
+
     if (isNaN(userId)) {
       return res.status(400).json({ error: "El ID de usuario debe ser un número válido" });
     }
 
-    const favorites = await getFavoritesByUser(userId);
+    const favorites = await getFavoritesByUser(userId, lang); 
     res.status(200).json(favorites);
   } catch (error) {
     next(error);

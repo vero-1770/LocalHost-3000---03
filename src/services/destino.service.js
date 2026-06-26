@@ -1,32 +1,36 @@
 import { prisma } from "../prisma/prismaClient.js";
 
-export const getAllDestinos = async (
-    page = 1,
-    limit = 9,
-    campo = 'todos',
-    filtro = ''
-) => {
-    // Calculamos cuántos registros saltear según la página
+export const getAllDestinos = async (page = 1, limit = 9, campo = 'todos', filtro = '', lang = 'es') => {
     const skip = (page - 1) * limit;
 
+    // Si no hay filtro, traemos todo. Si hay, filtramos dentro de las traducciones.
     let whereClausula = {};
 
-    // Si hay un texto para buscar, armamos el filtro
     if (filtro) {
         if (campo === 'todos') {
-            // Utilizamos el operador OR que busca en todas las columnas a la vez
+            // Buscamos en cualquier campo de la traducción actual
             whereClausula = {
-                OR: [
-                    { name: { contains: filtro, mode: 'insensitive' } },
-                    { country: { contains: filtro, mode: 'insensitive' } },
-                    { location: { contains: filtro, mode: 'insensitive' } },
-                    { description: { contains: filtro, mode: 'insensitive' } }
-                ]
+                translations: {
+                    some: {
+                        language: lang,
+                        OR: [
+                            { name: { contains: filtro, mode: 'insensitive' } },
+                            { country: { contains: filtro, mode: 'insensitive' } },
+                            { location: { contains: filtro, mode: 'insensitive' } },
+                            { description: { contains: filtro, mode: 'insensitive' } }
+                        ]
+                    }
+                }
             };
         } else {
-            // Si el campo no es 'todos', buscamos en la columna específica (ej: location, country)
+            // Buscamos solo en el campo específico que eligió el usuario
             whereClausula = {
-                [campo]: { contains: filtro, mode: 'insensitive' }
+                translations: {
+                    some: {
+                        language: lang,
+                        [campo]: { contains: filtro, mode: 'insensitive' }
+                    }
+                }
             };
         }
     }
@@ -36,32 +40,29 @@ export const getAllDestinos = async (
         skip: skip,
         take: limit,
         include: {
-            images: true
+            images: true,
+            translations: { 
+                where: { language: lang } 
+            }
         }
     });
 };
 
-export const getDestinoById = async (id, userId) => {
+export const getDestinoById = async (id, userId, lang = 'es') => { // Agregamos lang
     const destino = await prisma.destination.findUnique({
-        where: {
-            id
-        },
+        where: { id },
         include: {
-            translations: true,
             images: true,
-            votes: userId 
-                ? {
-                    where: {
-                        userId
-                    }
-                }
-                : false
+            accommodations: true,
+            transportations: true,
+            votes: userId ? { where: { userId } } : false,
+            translations: { 
+                where: { language: lang }
+            }
         }
     });
 
-    if (!destino) {
-        return null;
-    }
+    if (!destino) return null;
 
     return {
         ...destino,
