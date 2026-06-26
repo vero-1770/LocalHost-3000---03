@@ -6,7 +6,7 @@ import {
     deleteDestino,
 } from "../services/destino.service.js";
 
-import { validateDestino } from "../validations/destino.validation.js";
+import { validateDestino, validateTranslations } from "../validations/destino.validation.js";
 
 export const getDestinos = async (req, res, next) => {
     try {
@@ -19,27 +19,15 @@ export const getDestinos = async (req, res, next) => {
 
         const { country, location, description, name, search, q } = req.query;
 
-        if (country) {
-            campo = 'country';
-            filtro = country;
-        } else if (location) {
-            campo = 'location';
-            filtro = location;
-        } else if (description) {
-            campo = 'description';
-            filtro = description;
-        } else if (name) {
-            campo = 'name';
-            filtro = name;
-        } else if (search || q) {
-            campo = 'todos';
-            filtro = search || q; // Para cuando seleccionan "Todos" en el frontend
-        }
+        if (country) { campo = 'country'; filtro = country; } 
+        else if (location) { campo = 'location'; filtro = location; } 
+        else if (description) { campo = 'description'; filtro = description; } 
+        else if (name) { campo = 'name'; filtro = name; } 
+        else if (search || q) { campo = 'todos'; filtro = search || q; }
 
-        const destinos = await getAllDestinos(page, limit, campo, filtro);
+        const destinos = await getAllDestinos(page, limit, campo, filtro, lang);
         return res.status(200).json(destinos);
 
-        res.status(200).json(destinosFormateados);
     } catch (error) {
         next(error);
     }
@@ -48,14 +36,13 @@ export const getDestinos = async (req, res, next) => {
 export const getDestino = async (req, res, next) => {
     try {
         const id = parseInt(req.params.id);
+        const lang = req.query.lang || "es";
 
         if (isNaN(id)) {
             return res.status(400).json({ error: "El ID debe ser un número válido" });
         }
 
-        const lang = req.query.lang || "es";
-
-        const destino = await getDestinoById(id);
+        const destino = await getDestinoById(id, req.user?.id, lang);
 
         if (!destino) {
             return res.status(404).json({ error: "Destino no encontrado" });
