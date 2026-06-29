@@ -13,13 +13,23 @@ export const getDestinos = async (req, res, next) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 9;
         const lang = req.query.lang || "es";
-        const filtro = req.query.filtro || '';
-        const campo = req.query.campo || 'search';
 
-        const destinos = await getAllDestinos(page, limit, filtro, campo);
+        let campo = 'todos';
+        let filtro = '';
+
+        const { country, location, description, name, search, q } = req.query;
+
+        if (country) { campo = 'country'; filtro = country; } 
+        else if (location) { campo = 'location'; filtro = location; } 
+        else if (description) { campo = 'description'; filtro = description; } 
+        else if (name) { campo = 'name'; filtro = name; } 
+        else if (search || q) { campo = 'todos'; filtro = search || q; }
+
+        const destinos = await getAllDestinos(page, limit, campo, filtro, lang);
         const destinosFormateados = destinos.map((d) => formatDestino(d, lang));
+        
 
-        res.status(200).json(destinosFormateados);
+      return  res.status(200).json(destinosFormateados);
     } catch (error) {
         next(error);
     }
@@ -28,18 +38,20 @@ export const getDestinos = async (req, res, next) => {
 export const getDestino = async (req, res, next) => {
     try {
         const id = parseInt(req.params.id);
+
         if (isNaN(id)) {
             return res.status(400).json({ error: "El ID debe ser un numero valido" });
         }
 
         const lang = req.query.lang || "es";
-        const destino = await getDestinoById(id, req.user?.id);
+        const destino = await getDestinoById(id, req.user?.id, lang);
+
 
         if (!destino) {
             return res.status(404).json({ error: "Destino no encontrado" });
         }
 
-        res.status(200).json(formatDestino(destino, lang));
+      return  res.status(200).json(formatDestino(destino, lang));
     } catch (error) {
         next(error);
     }
@@ -48,8 +60,11 @@ export const getDestino = async (req, res, next) => {
 export const postDestino = async (req, res, next) => {
     try {
         const { translations, budget } = req.body;
+
+        // Validar las traducciones (sin librerías)
         const errors = validateTranslations(translations);
 
+        // Validar budget (campo propio del destino)
         if (budget === undefined || budget === null || isNaN(Number(budget)) || Number(budget) <= 0) {
             errors.push({
                 field: "budget",
@@ -58,11 +73,18 @@ export const postDestino = async (req, res, next) => {
         }
 
         if (errors.length > 0) {
+            return res.status(400).json({
+                error: "Datos inválidos",
+                details: errors,
+            });
+        }
+
+        if (errors.length > 0) {
             return res.status(400).json({ error: "Datos inválidos", details: errors });
         }
 
         const destino = await createDestino(req.body);
-        res.status(201).json(destino);
+        return res.status(201).json(destino);
     } catch (error) {
         next(error);
     }
@@ -95,7 +117,8 @@ export const putDestino = async (req, res, next) => {
         }
 
         const destino = await updateDestino(id, req.body);
-        res.status(200).json(destino);
+        return res.status(200).json(destino);
+
     } catch (error) {
         next(error);
     }
@@ -105,7 +128,7 @@ export const deleteDestinoController = async (req, res, next) => {
     try {
         const id = parseInt(req.params.id);
         if (isNaN(id)) {
-            return res.status(400).json({ error: "El ID debe ser un numero valido" });
+            return res.status(400).json({ error: "El ID debe ser un número válido" });
         }
 
         const existente = await getDestinoById(id);
@@ -114,7 +137,7 @@ export const deleteDestinoController = async (req, res, next) => {
         }
 
         await deleteDestino(id);
-        res.status(200).json({ message: "Destino eliminado correctamente" });
+        return res.status(200).json({ message: "Destino eliminado correctamente" });
     } catch (error) {
         next(error);
     }

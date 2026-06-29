@@ -11,23 +11,44 @@ import imageRoutes from "./routes/image.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
+// Inicializo aplicación
 const app = express();
 
-// Configuramos un solo CORS que sirva pa' todo el mundo
+// Centralizo los origenes permitidos (producción + local)
+const allowedOrigins = [
+  "http://localhost:5173",// LOCAL
+  process.env.FRONTEND_URL// DOMINIO DE PRODUCCIÓN VERCEL
+].filter(Boolean);// evitamos valores undefined
+
+// Configuración de cors
 app.use(cors({
-    origin: [
-      "http://localhost:5173", // Tu React de Vite (¡Imprescindible aquí!)
-      "http://localhost:3000",
-      process.env.FRONTEND_URL  // Tu URL de producción cuando lo montes
-    ].filter(Boolean), // Esto limpia si alguna variable viene undefined
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+    origin: (origin, callback) => {
+      // Si la petición no tiene origen (como Postman o el Health Check)
+      // o el origen está explícitamente listado, permitimos el acceso.
+      if(!origin || allowedOrigins.includes(origin)){
+        callback(null, true);
+      }else{
+        callback(new Error(`Bloqueado por CORS: El origen ${origin} no está autorizado.`));
+      }
+    },
+    credentials: true,// permitimos el envío de Access/Refresh Cookies
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
 }));
 
+// Middlewares
 app.use(express.json());
 app.use(cookieParser());
 
+// Ruta raíz para evitar error 404
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "¡El backend de TravelHub está online y funcionando de forma serverless!",
+  });
+});
+
+// Endpoint de monitoreo
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     status: "ok",
@@ -35,7 +56,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Tus rutas quedan igualito...
+// Registros de rutas de la aplicación
 app.use("/api/destinos", destinoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/accommodations", accommodationRoutes);
@@ -45,6 +66,7 @@ app.use("/api/votes", voteRoutes);
 app.use("/api/images", imageRoutes);
 app.use("/api/auth", authRoutes);
 
+//Manejo centralizado de errores. Debe ir SIEMPRE al final, despues de todas las rutas
 app.use(errorHandler);
 
 export default app;

@@ -1,22 +1,21 @@
 import { prisma } from "../prisma/prismaClient.js";
 
 export const addVote = async (userId, destinationId, score) => {
-
   return await prisma.$transaction(async (tx) => {
-
-  const existe = await tx.vote.findUnique({
-    where:{
-      userId_destinationId:{
-        userId,
-        destinationId
+    // Verificar si ya existe
+    const existe = await tx.vote.findUnique({
+      where: {
+        userId_destinationId: {
+          userId,
+          destinationId
+        }
       }
+    });
+
+    if (existe) {
+      throw new Error("Ya votaste este destino");
     }
-  });
 
-
-  if(existe){
-    throw new Error("Ya votaste este destino");
-  }
     // Crear el voto
     const vote = await tx.vote.create({
       data: {
@@ -26,7 +25,7 @@ export const addVote = async (userId, destinationId, score) => {
       },
     });
 
-    // Actualizar totalScore y votesCount del destino
+    // Actualizar matemáticamente totalScore y votesCount
     const destination = await tx.destination.update({
       where: { id: destinationId },
       data: {
@@ -39,20 +38,12 @@ export const addVote = async (userId, destinationId, score) => {
       }
     });
 
-    // Recalcular el rating
+    // Recalcular el rating y hacer actualización final
     const newRating = destination.totalScore / destination.votesCount;
-    await tx.destination.update({
+    
+    const destinoActualizado = await tx.destination.update({
       where: { id: destinationId },
-      data: { rating: newRating },
-    });
-
-     const destinoActualizado = await tx.destination.update({
-      where:{
-        id: destinationId
-      },
-      data:{
-        rating:newRating
-      }
+      data: { rating: newRating }
     });
 
     return {
@@ -73,14 +64,14 @@ export const removeVote = async (userId, destinationId) => {
 
     if (!vote) return null;
 
-    // Eliminar el voto
+    // Eliminar voto
     await tx.vote.delete({
       where: {
         userId_destinationId: { userId, destinationId },
       },
     });
 
-    // Actualizar totalScore y votesCount
+    // Actualizar totalScore y votesCount descontando el voto eliminado
     const destination = await tx.destination.update({
       where: { id: destinationId },
       data: {
@@ -89,7 +80,7 @@ export const removeVote = async (userId, destinationId) => {
       },
     });
 
-    // Recalcular rating
+    // Recalcular rating (evitamos división por cero)
     const newRating = destination.votesCount > 0
       ? destination.totalScore / destination.votesCount
       : 0;

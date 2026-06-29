@@ -60,7 +60,8 @@ async function main() {
         email: "gabriel@travelhub.com",
         // Clave: uncoma2026
         passwordHash: "$2a$10$O6XI0H4zfp7e.ZRXjbu8AutZTwq7nqOvQQlDaLs99T5rzjdDRTejK",
-        avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=gabriel"
+        avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=gabriel",
+        role: "ADMIN"
       }
     }),
     prisma.user.create({
@@ -69,7 +70,8 @@ async function main() {
         email: "paula@travelhub.com",
         // Clave: paula123
         passwordHash: "$2a$10$L6pgTppBxVhnXHg4ad04u.HCt7pxr4OgdF75N3X9l64pPTxjceJyy",
-        avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=paula"
+        avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=paula",
+        role: "USER"
       }
     }),
     prisma.user.create({

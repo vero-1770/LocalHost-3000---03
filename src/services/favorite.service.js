@@ -18,13 +18,16 @@ export const removeFavorite = async (userId, destinationId) => {
   });
 };
 
-export const getFavoritesByUser = async (userId) => {
+export const getFavoritesByUser = async (userId, lang = 'es') => {
   return await prisma.favorite.findMany({
     where: { userId },
-      include: {
+    include: {
       destination: {
         include: {
-          images: true
+          images: true,
+          translations: {
+            where: { language: lang }
+          }
         }
       }
     }
