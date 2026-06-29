@@ -10,6 +10,6 @@ const router = Router();
 
 router.get("/", verifyToken, getVotes);
 router.post("/",verifyToken, postVote);
-router.delete("/",verifyToken, deleteVote);
+router.delete("/:destinationId",verifyToken, deleteVote);
 
 export default router;

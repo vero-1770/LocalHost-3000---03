@@ -17,6 +17,7 @@ model User {
   passwordHash String
   refreshToken String?
   avatarUrl    String?
+  role         Role       @default(USER)
   favorites    Favorite[]
   votes        Vote[]
 
@@ -120,4 +121,9 @@ model Vote {
 
   @@unique([userId, destinationId])
   @@map("votes")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
