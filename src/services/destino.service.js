@@ -41,17 +41,18 @@ export const getAllDestinos = async (page = 1, limit = 9, campo = 'todos', filtr
         take: limit,
         include: {
             images: true,
-            translations: { 
-                where: { language: lang } 
-            }
-        }
+            translations: true,
+        },
     });
 };
 
+
 export const getDestinoById = async (id, userId, lang = 'es') => { // Agregamos lang
+
     const destino = await prisma.destination.findUnique({
         where: { id },
         include: {
+            
             images: true,
             accommodations: true,
             transportations: true,
@@ -60,13 +61,14 @@ export const getDestinoById = async (id, userId, lang = 'es') => { // Agregamos 
                 where: { language: lang }
             }
         }
+
     });
 
     if (!destino) return null;
 
     return {
         ...destino,
-        userVote: destino.votes?.[0]?.score ?? null
+        userVote: destino.votes?.[0]?.score ?? null,
     };
 };
 
@@ -74,7 +76,7 @@ export const createDestino = async (data) => {
     return await prisma.destination.create({
         data: {
             budget: Number(data.budget),
-            // Si el body trae más campos propios del destino tenemos que agregarlos aca
+
             translations: {
                 create: data.translations.map((t) => ({
                     language: t.language,
@@ -86,7 +88,9 @@ export const createDestino = async (data) => {
             },
         },
         include: {
+
             translations: true, //devolvemos el destino con sus traducciones creadas
+
         },
     });
 };
@@ -97,7 +101,9 @@ export const updateDestino = async (id, data) => {
         data: {
             budget: Number(data.budget),
             translations: {
+
                 deleteMany: {},  // borra TODAS las traducciones actuales del destino
+
                 create: data.translations.map((t) => ({
                     language: t.language,
                     name: t.name,

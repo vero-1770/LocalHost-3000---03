@@ -1,12 +1,12 @@
-import { 
-    getAllDestinos, 
-    getDestinoById, 
+import {
+    getAllDestinos,
+    getDestinoById,
     createDestino,
-    updateDestino, 
+    updateDestino,
     deleteDestino,
 } from "../services/destino.service.js";
-
 import { validateDestino, validateTranslations } from "../validations/destino.validation.js";
+import { formatDestino } from "../utils/destinoFormatter.js";
 
 export const getDestinos = async (req, res, next) => {
     try {
@@ -26,8 +26,10 @@ export const getDestinos = async (req, res, next) => {
         else if (search || q) { campo = 'todos'; filtro = search || q; }
 
         const destinos = await getAllDestinos(page, limit, campo, filtro, lang);
-        return res.status(200).json(destinos);
+        const destinosFormateados = destinos.map((d) => formatDestino(d, lang));
+        
 
+      return  res.status(200).json(destinosFormateados);
     } catch (error) {
         next(error);
     }
@@ -36,19 +38,20 @@ export const getDestinos = async (req, res, next) => {
 export const getDestino = async (req, res, next) => {
     try {
         const id = parseInt(req.params.id);
-        const lang = req.query.lang || "es";
 
         if (isNaN(id)) {
-            return res.status(400).json({ error: "El ID debe ser un número válido" });
+            return res.status(400).json({ error: "El ID debe ser un numero valido" });
         }
 
+        const lang = req.query.lang || "es";
         const destino = await getDestinoById(id, req.user?.id, lang);
+
 
         if (!destino) {
             return res.status(404).json({ error: "Destino no encontrado" });
         }
 
-        return res.status(200).json(destino);
+      return  res.status(200).json(formatDestino(destino, lang));
     } catch (error) {
         next(error);
     }
@@ -76,6 +79,10 @@ export const postDestino = async (req, res, next) => {
             });
         }
 
+        if (errors.length > 0) {
+            return res.status(400).json({ error: "Datos inválidos", details: errors });
+        }
+
         const destino = await createDestino(req.body);
         return res.status(201).json(destino);
     } catch (error) {
@@ -87,19 +94,24 @@ export const putDestino = async (req, res, next) => {
     try {
         const id = parseInt(req.params.id);
         if (isNaN(id)) {
-            return res.status(400).json({ error: "El ID debe ser un número válido" });
+            return res.status(400).json({ error: "El ID debe ser un numero valido" });
         }
 
-        const errors = validateDestino(req.body);
-        if (errors.length > 0) {
-            return res.status(400).json({
-                error: "Datos inválidos",
-                details: errors,
+        const { translations, budget } = req.body;
+        const errors = validateTranslations(translations);
+
+        if (budget === undefined || budget === null || isNaN(Number(budget)) || Number(budget) <= 0) {
+            errors.push({
+                field: "budget",
+                message: "El presupuesto es obligatorio y debe ser un número mayor a 0",
             });
         }
 
-        const existente = await getDestinoById(id);
+        if (errors.length > 0) {
+            return res.status(400).json({ error: "Datos inválidos", details: errors });
+        }
 
+        const existente = await getDestinoById(id);
         if (!existente) {
             return res.status(404).json({ error: "Destino no encontrado" });
         }
